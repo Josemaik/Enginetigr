@@ -19,7 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\libs\pugixml\pugixml.cpp" />
+    <ClCompile Include="..\libs\tigr.c" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\managers\Engine.cpp" />
+    <ClCompile Include="..\src\managers\SpriteManager.cpp" />
+    <ClCompile Include="Lua.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\ecs.hh" />
+    <ClInclude Include="..\libs\tigr.h" />
+    <ClInclude Include="..\src\managers\Engine.h" />
+    <ClInclude Include="..\src\managers\SpriteManager.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -73,16 +84,24 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,10 +126,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>../libs</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

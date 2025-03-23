@@ -16,10 +16,48 @@
     <Filter Include="Source Files\src">
       <UniqueIdentifier>{3870cc7e-5a16-47f8-9471-db7621297e90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\managers">
+      <UniqueIdentifier>{c1224c97-1c27-42a5-a34d-6c6829ffe1a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libs">
+      <UniqueIdentifier>{f3274491-cc05-4fac-a71c-95a5e21ff6e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\libs\ECS">
+      <UniqueIdentifier>{c2fd3479-7bb0-4d92-b3b8-f9c0e070efeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\managers\Engine.cpp">
+      <Filter>Source Files\src\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\managers\SpriteManager.cpp">
+      <Filter>Source Files\src\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\tigr.c">
+      <Filter>Source Files\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\pugixml\pugixml.cpp">
+      <Filter>Source Files\libs</Filter>
+    </ClCompile>
+    <ClCompile Include="Lua.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\managers\SpriteManager.hpp">
+      <Filter>Source Files\src\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\managers\Engine.h">
+      <Filter>Source Files\src\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\ecs.hh">
+      <Filter>Source Files\libs\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\tigr.h">
+      <Filter>Source Files\libs</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
