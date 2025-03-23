@@ -13,6 +13,13 @@
 static constexpr float timeStep = 1000.f / 30.f;
 static constexpr float ScreenWidth = 320.f;
 static constexpr float ScreenHeight = 240.f;
+// gamedev types and constants
+using vec2i = std::pair<int, int>;
+using vec2f = std::pair<float, float>;
+//components
+using sprite = component< Sprite, 'spr' >;
+using position = component< vec2f, 'pos' >;
+
 
 class Engine {
 public:
@@ -24,7 +31,7 @@ public:
 	bool Init();
 
 	//bool Input();
-	//bool KeyDownA();
+	bool KeyDown(int key);
 
 	//Free Memory
 	bool Quit();
@@ -41,7 +48,7 @@ public:
 	void Log(const char* text);
 
 	//Print text
-	void Print(const char* text);
+	void Print(const char* text, int x, int y);
 
 	//Update deltaTime
 	double getTime();
@@ -61,4 +68,6 @@ public:
 	void Wait(float ms);
 
 	void PlayDemo();
+
+	void CreateEntity();
 };

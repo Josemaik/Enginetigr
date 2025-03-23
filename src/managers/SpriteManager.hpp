@@ -23,7 +23,7 @@ struct Sprite
 		}
 	}
 
-	void Draw(Tigr* window,int _x, int _y)
+	void Draw(Tigr* window)
 	{
 		//int dx = x, dy = y; //coordinates
 		int sx = 0, sy = 0; // source co - ordinates

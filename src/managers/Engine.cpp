@@ -12,10 +12,10 @@ bool Engine::Init() {
 	return true;
 }
 
-//bool Engine::KeyDownA()
-//{
-//  //return tigrKeyDown(m_screen, 'A');
-//}
+bool Engine::KeyDown(int key)
+{
+  return tigrKeyHeld(m_screen, key);
+}
 
 bool Engine::Quit() {
 	tigrFree(m_screen);
@@ -31,7 +31,7 @@ bool Engine::isRunning() {
 
 void Engine::Clear()
 {
-	tigrClear(m_screen, tigrRGB(0, 0, 0));
+	tigrClear(m_screen, tigrRGB(0, 0, 255));
 }
 
 void Engine::DoSystemEventsAndUpdateScreen()
@@ -44,9 +44,9 @@ void Engine::Log(const char* text)
 	puts(text);
 }
 
-void Engine::Print(const char* text)
+void Engine::Print(const char* text, int x ,int y)
 {
-	tigrPrint(m_screen, tfont, 0, 0, tigrRGB(0xff, 0xff, 0xff), text);
+	tigrPrint(m_screen, tfont, x, y, tigrRGB(0xff, 0xff, 0xff), text);
 }
 
 double Engine::getTime()
@@ -74,9 +74,6 @@ void Engine::Wait(float ms)
 
 void Engine::PlayDemo()
 {
-  // gamedev types and constants
-  typedef std::pair<int, int>    vec2i;
-  typedef std::pair<float, float> vec2f;
   const vec2f zero = { 0.f, 0.f }, one = { 1.f, 1.f };
   // component aliases
   using friendly = component<        bool, 'team' >;
@@ -130,7 +127,7 @@ void Engine::PlayDemo()
         << "(" << get<position>(id).first << "," << get<position>(id).second << ")"
         << " " << get<health>(id) << "HP"
         << " " << get<coins>(id) << "$, ";*/
-      Print(toString(get<name>(id) + " at ").c_str());
+      //Print(toString(get<name>(id) + " at ").c_str());
     }
     std::cout << std::endl;
     };
@@ -178,4 +175,9 @@ void Engine::PlayDemo()
   assert(!has<name>(player));
 
   assert((join<name, position>().size() == 1));
+}
+
+void Engine::CreateEntity()
+{
+  
 }
