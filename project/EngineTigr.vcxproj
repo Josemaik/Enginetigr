@@ -126,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libs;..\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

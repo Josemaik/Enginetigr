@@ -42,7 +42,7 @@ int main()
 
 	//Load de un xml
 	Sprite spr2;
-	spr2.Load(spr2, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"data/squinkle.png\" />");
+	spr2.Load(spr2, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"../data/squinkle.png\" />");
 	spr2.x = (ScreenWidth / 2.f) - (spr2.image->w / 2.f);
 	spr2.y = ScreenHeight - spr2.image->h;
 
@@ -50,7 +50,15 @@ int main()
 	int player = 0;
 	add<sprite>(player) = spr2;
 	add<position>(player) = vec2f((ScreenWidth / 2.f) - (spr2.image->w / 2.f), ScreenHeight - spr2.image->h);
-
+	add<input>(player) = true;
+	add<scale>(player) = 1.f;
+	//Creo enemie
+	Sprite spritenemie("../data/ball.png");
+	spritenemie.scale = 0.5f;
+	int enemie = 1;
+	add<sprite>(enemie) = spritenemie;
+	add<position>(enemie) = vec2f((ScreenWidth / 2.5f), ScreenHeight / 2.5f);
+	add<scale>(enemie) = 0.5f;
 	//float previousTime = engine.getTime();
 	static float GlobalTimer = 0.f;
 	if (engine.Init())
@@ -67,7 +75,7 @@ int main()
 			float fps = 1.f / (delta + !delta);
 
 			//Wait
-			//engine.Wait(timeStep);
+			engine.Wait(timeStep);
 
 			engine.Clear();
 			engine.Print((engine.toString(fps) + " fps").c_str(),0,5);
@@ -81,7 +89,7 @@ int main()
 			float lastposX = spr2.x;
 
 			//input
-			for (auto& id : join<position,sprite>()) {
+			for (auto& id : join<input,position>()) {
 				vec2f& pos = get<position>(id);
 				Sprite& spr = get<sprite>(id);
 				if (engine.KeyDown('A'))

@@ -10,7 +10,7 @@
 #include "Spritemanager.hpp"
 
 //global variables
-static constexpr float timeStep = 1000.f / 30.f;
+static constexpr float timeStep = 1000.f / 60.f;
 static constexpr float ScreenWidth = 320.f;
 static constexpr float ScreenHeight = 240.f;
 // gamedev types and constants
@@ -19,6 +19,9 @@ using vec2f = std::pair<float, float>;
 //components
 using sprite = component< Sprite, 'spr' >;
 using position = component< vec2f, 'pos' >;
+using input = component < bool, 'inp' >;
+using scale = component < float, 'scal' >;
+//using physic = component < 
 
 
 class Engine {
