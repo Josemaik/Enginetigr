@@ -28,6 +28,10 @@ template<typename T> bool has( unsigned id ) {
 template<typename T> decltype(T::value_type) &get( unsigned id ) {
     static decltype(T::value_type) invalid, reset;
     return has<T>(id) ? components<T>()[id].value_type : invalid = reset; }
+//template<typename T> auto& get(unsigned id) {
+//    static typename T::value_type invalid, reset;
+//    return has<T>(id) ? components<T>()[id].value_type : (invalid = reset);
+//}
 
 template<typename T> decltype(T::value_type) &add( unsigned id ) {
     return system<T>().insert( id ), components<T>()[id] = components<T>()[id], get<T>(id); }

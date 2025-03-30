@@ -19,10 +19,11 @@ using vec2f = std::pair<float, float>;
 //components
 using sprite = component< Sprite, 'spr' >;
 using position = component< vec2f, 'pos' >;
+using lastposition = component< vec2f, 'posl' >;
 using input = component < bool, 'inp' >;
-using scale = component < float, 'scal' >;
-//using physic = component < 
-
+using speedX = component < float, 'velx' >;
+using speedY = component < float, 'vely' >;
+using IA = component < bool, 'ia' >;
 
 class Engine {
 public:
