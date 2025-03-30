@@ -23,6 +23,7 @@
     <ClCompile Include="..\libs\tigr.c" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\managers\Engine.cpp" />
+    <ClCompile Include="..\src\managers\Game.cpp" />
     <ClCompile Include="..\src\managers\SpriteManager.cpp" />
     <ClCompile Include="Lua.c" />
   </ItemGroup>
@@ -30,6 +31,7 @@
     <ClInclude Include="..\libs\ecs.hh" />
     <ClInclude Include="..\libs\tigr.h" />
     <ClInclude Include="..\src\managers\Engine.h" />
+    <ClInclude Include="..\src\managers\Game.h" />
     <ClInclude Include="..\src\managers\SpriteManager.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

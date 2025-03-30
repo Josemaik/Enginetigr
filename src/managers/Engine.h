@@ -74,4 +74,24 @@ public:
 	void PlayDemo();
 
 	void CreateEntity();
+
+
+	//Collisions
+	float euclidean_distance(const vec2f& _other,const vec2f& _other1) const
+	{
+		auto dx{ _other.first - _other1.first };
+		auto dy{ _other.second - _other1.second };
+		return std::sqrt(dx * dx + dy * dy);
+	}
+	////////////////////////////////////
+	//CIRCLE-CIRCLE
+	bool checkCircleCircle(const vec2f& pos1, float radius1, const vec2f& pos2, float radius2) const
+	{
+		float distance = std::abs(euclidean_distance(pos1,pos2));
+		if (distance < (radius1 + radius2))
+		{
+			return true;
+		}
+		return false;
+	}
 };

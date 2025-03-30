@@ -45,6 +45,9 @@
     <ClCompile Include="Lua.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\managers\Game.cpp">
+      <Filter>Source Files\src\managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\managers\SpriteManager.hpp">
@@ -58,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="..\libs\tigr.h">
       <Filter>Source Files\libs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\managers\Game.h">
+      <Filter>Source Files\src\managers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
