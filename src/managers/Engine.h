@@ -8,6 +8,9 @@
 //ECS
 #include "ecs.hh"
 #include "Spritemanager.hpp"
+//components
+#include "../components/AIComponent.h"
+#include "../components/AnimationComponent.h"
 
 //global variables
 static constexpr float timeStep = 1000.f / 60.f;
@@ -23,7 +26,8 @@ using lastposition = component< vec2f, 'posl' >;
 using input = component < bool, 'inp' >;
 using speedX = component < float, 'velx' >;
 using speedY = component < float, 'vely' >;
-using IA = component < bool, 'ia' >;
+using IA = component < AIComponent, 'ia' >;
+using Anim = component < AnimationComponent, 'anim'>;
 
 class Engine {
 public:

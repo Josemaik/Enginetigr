@@ -25,6 +25,9 @@
     <Filter Include="Source Files\libs\ECS">
       <UniqueIdentifier>{c2fd3479-7bb0-4d92-b3b8-f9c0e070efeb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\components">
+      <UniqueIdentifier>{df18eec7-4425-4840-8d31-0c30471ae6f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -64,6 +67,12 @@
     </ClInclude>
     <ClInclude Include="..\src\managers\Game.h">
       <Filter>Source Files\src\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\components\AIComponent.h">
+      <Filter>Source Files\src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\components\AnimationComponent.h">
+      <Filter>Source Files\src\components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

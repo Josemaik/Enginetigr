@@ -9,6 +9,13 @@
 struct Sprite
 {
 	Sprite() {};
+
+	//Sprite(const Sprite&) = delete; // <--- importante
+	//Sprite& operator=(const Sprite&) = delete;
+
+	//Sprite(Sprite&&) = default;
+	//Sprite& operator=(Sprite&&) = default;
+
 	Sprite(const std::string& file)
 	{
 		texture_file = file;
@@ -16,6 +23,7 @@ struct Sprite
 	}
 	~Sprite()
 	{
+		printf("Destructor llamado\n");
 		if (image)
 		{
 			tigrFree(image);

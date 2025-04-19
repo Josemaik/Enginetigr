@@ -13,13 +13,13 @@
 int main()
 {
 	//Bloque Lua
-	lua_State* L = luaL_newstate();
-	if (L == NULL)
-		return -1;
-	luaL_openlibs(L);
-	luaL_loadstring(L, "print 'TigrEngine ready!'");
-	lua_call(L, 0, 0);
-	lua_close(L);
+	//lua_State* L = luaL_newstate();
+	//if (L == NULL)
+	//	return -1;
+	//luaL_openlibs(L);
+	//luaL_loadstring(L, "print 'TigrEngine ready!'");
+	//lua_call(L, 0, 0);
+	//lua_close(L);
 
 	//Initialize engine
 	Engine engine;
@@ -31,6 +31,13 @@ int main()
 		game.Run();
 
 		engine.Quit();
+
+		return 0;
 	}
-	return 0;
+	else
+	{
+		std::cerr << "Error: No se pudo inicializar el engine." << std::endl;
+		return 1;
+	}
+	//return 0;
 }

@@ -34,7 +34,20 @@ template<typename T> decltype(T::value_type) &get( unsigned id ) {
 //}
 
 template<typename T> decltype(T::value_type) &add( unsigned id ) {
-    return system<T>().insert( id ), components<T>()[id] = components<T>()[id], get<T>(id); }
+    return system<T>().insert( id ), components<T>()[id] = components<T>()[id], get<T>(id); 
+}
+
+//template<typename T>
+//decltype(T::value_type)& add(unsigned id) {
+//  system<T>().insert(id);
+//  return components<T>()[id]; // crea si no existe, no se autole asigna
+//}
+//template<typename T>
+//decltype(T::value_type)& add(unsigned id) {
+//  system<T>().insert(id);
+//  // Esto asegura que se construya por defecto si no existía
+//  return components<T>()[id];
+//}
 
 
 template<typename T> bool del( unsigned id ) {

@@ -30,6 +30,8 @@
   <ItemGroup>
     <ClInclude Include="..\libs\ecs.hh" />
     <ClInclude Include="..\libs\tigr.h" />
+    <ClInclude Include="..\src\components\AIComponent.h" />
+    <ClInclude Include="..\src\components\AnimationComponent.h" />
     <ClInclude Include="..\src\managers\Engine.h" />
     <ClInclude Include="..\src\managers\Game.h" />
     <ClInclude Include="..\src\managers\SpriteManager.hpp" />

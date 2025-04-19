@@ -2,54 +2,58 @@
 #include "../src/managers/Engine.h"
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 
 
 
 void Game::Run()
 {
-	engine.Init();
-
 	//Load de un xml
-	Sprite spr2;
-	spr2.Load(spr2, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"../data/squinkle.png\" />");
-	spr2.x = (ScreenWidth / 2.f) - (spr2.image->w / 2.f);
-	spr2.y = ScreenHeight - spr2.image->h;
+	//Sprite spr2;
+	//spr2.Load(spr2, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"../data/squinkle.png\" />");
+	//spr2.x = (ScreenWidth / 2.f) - (spr2.image->w / 2.f);
+	//spr2.y = ScreenHeight - spr2.image->h;
 	
 	//Creo player
+	Sprite playersprite("../data/squinkle.png");
 	int player = 0;
-	add<sprite>(player) = spr2;
-	add<position>(player) = vec2f((ScreenWidth / 2.f) - (spr2.image->w / 2.f), ScreenHeight - spr2.image->h);
-	add<speedX>(player) = 60.f;
+	add<sprite>(player) = playersprite;
+	//add<position>(player) = vec2f((ScreenWidth / 2.f) - (spr2.image->w / 2.f), ScreenHeight - spr2.image->h);*/
+	/*add<speedX>(player) = 60.f;
 	add<input>(player) = true;
-	add<lastposition>(player) = vec2f{};
-	//Creo enemie
-	Sprite spritenemie("../data/ball.png");
+	add<lastposition>(player) = vec2f{};*/
+	//Creo enemie simple - rebotan normal y cambian de sentido al colisionar con cualquier objeto
+	//Sprite spritenemie("../data/ball.png");
+	//int enemie = 1;
+	//add<sprite>(enemie) = spritenemie;
+	//add<speedY>(enemie) = 30.f;
+	//add<speedX>(enemie) = 30.f;
+	//add<position>(enemie) = vec2f((ScreenWidth / 2.5f), 0.f);
+	//add<lastposition>(enemie) = vec2f{};
+	//add<IA>(enemie) = AIComponent{.behaviour = Behaviours::SquashStretch};
+	////Creo enemie simple
+	//Sprite spritenemie1("../data/ball_mid.png");
+	//int enemiemid = 2;
+	//add<sprite>(enemiemid) = spritenemie1;
+	//add<speedY>(enemiemid) = 60.f;
+	//add<speedX>(enemiemid) = -60.f;
+	//add<position>(enemiemid) = vec2f(30.f, 0.f);
+	//add<lastposition>(enemiemid) = vec2f{};
+	//add<IA>(enemiemid) = AIComponent{ .behaviour = Behaviours::SquashStretch };
+
+	/*Sprite spritenemie1("../data/hexagonBall_frame1.png");
+	Sprite spritenemie2("../data/hexagonBall_frame2.png");
+	Sprite spritenemie3("../data/hexagonBall_frame3.png");
+
 	int enemie = 1;
-	add<sprite>(enemie) = spritenemie;
+	add<sprite>(enemie) = spritenemie1;
 	add<speedY>(enemie) = 30.f;
 	add<speedX>(enemie) = 30.f;
 	add<position>(enemie) = vec2f((ScreenWidth / 2.5f), 0.f);
 	add<lastposition>(enemie) = vec2f{};
-	add<IA>(enemie) = true;
-	//Creo enemie
-	Sprite spritenemie1("../data/ball_mid.png");
-	int enemiemid = 2;
-	add<sprite>(enemiemid) = spritenemie1;
-	add<speedY>(enemiemid) = 60.f;
-	add<speedX>(enemiemid) = -60.f;
-	add<position>(enemiemid) = vec2f(30.f, 0.f);
-	add<lastposition>(enemiemid) = vec2f{};
-	add<IA>(enemiemid) = true;
-	//Creo enemie
-	//Sprite spritenemie1("../data/ball_mid.png");
-	/*int enemiemid2 = 3;
-	add<sprite>(enemiemid2) = spritenemie1;
-	add<speedY>(enemiemid2) = 60.f;
-	add<speedX>(enemiemid2) = 60.f;
-	add<position>(enemiemid2) = vec2f(30.f, 0.f);
-	add<lastposition>(enemiemid2) = vec2f{};
-	add<IA>(enemiemid2) = true;*/
-
+	add<IA>(enemie) = AIComponent{.behaviour = Behaviours::BounceSimple};*/
+	//add<Anim>(enemie) = AnimationComponent{ .spritesheet{spritenemie1,spritenemie2,spritenemie3}, .framerate = 5.f,.currentframe = 0 };
+	
 	//Loop
 	while (engine.isRunning())
 	{
@@ -114,7 +118,11 @@ void Game::Run()
 				vec2f& laspos = get<lastposition>(id);
 				vec2f& pos = get<position>(id);
 				Sprite& spr = get<sprite>(id);
-
+				if (spr.image == nullptr)
+				{
+					std::cerr << "Error: Sprite image is nullptr!" << std::endl;
+					exit(1); // Opcional, o dejar que continúe mostrando algo.
+				}
 				//collision with screen bounds
 				bool leftWall = pos.first < 0;
 				bool rightWall = (pos.first + spr.image->w) > ScreenWidth;
@@ -152,22 +160,59 @@ void Game::Run()
 							Sprite& spr2 = get<sprite>(2);
 							vec2f& pos2 = get<position>(2);
 
-							if (engine.checkCircleCircle(pos, spr.image->w / 2.5f, pos2, spr2.image->w / 2.5f))
+							if (spr2.image != nullptr)
 							{
-								printf("Colision entre circulos\n");
-								auto& speedy2 = get<speedY>(2);
-								auto& speedx2 = get<speedX>(2);
-								speedy2 *= -1;
-								speedx2 *= -1;
-								auto& speedy = get<speedY>(id);
-								auto& speedx = get<speedX>(id);
-								speedy *= -1;
-								speedx *= -1;
+								if (engine.checkCircleCircle(pos, spr.image->w / 2.5f, pos2, spr2.image->w / 2.5f))
+								{
+									printf("Colision entre circulos\n");
+									auto& speedy2 = get<speedY>(2);
+									auto& speedx2 = get<speedX>(2);
+									speedy2 += 5;
+									speedx2 += 5;
+									speedy2 *= -1;
+									speedx2 *= -1;
+									auto& speedy = get<speedY>(id);
+									auto& speedx = get<speedX>(id);
+									speedy *= -1;
+									speedx *= -1;
+								}
 							}
 						}
 					}
 				}
 			}
+
+			//Animation
+			//for (auto& id : join<sprite, Anim>())
+			//{
+				//Sprite& spr = get<sprite>(id);
+				/*float& time = get<Anim>(id).currentTime;
+				time += delta;
+				printf("currenttime: %f", time);*/
+				
+			//}
+
+			//IA
+			//for (auto& id : join<position,IA>())
+			//{
+			//	Behaviours bh = get<IA>(id).behaviour;
+			//	switch (bh)
+			//	{
+			//	case Behaviours::BounceSimple:
+			//	{
+			//		//printf("Soy simple\n");
+
+			//	}
+			//		break;
+			//	case Behaviours::SquashStretch:
+			//	{
+			//		//printf("Me aplasto\n");
+			//	}
+			//		break;
+			//	default:
+			//		break;
+			//	}
+			//}
 
 			//render
 			for (auto& id : join<position, sprite>()) {
