@@ -12,6 +12,7 @@
 #include "../components/AIComponent.h"
 #include "../components/AnimationComponent.h"
 #include "../components/PhysicsComponent.h"
+#include "../components/SpawnerComponent.h"
 //utils
 #include "../utils/Vector2.h"
 
@@ -24,6 +25,7 @@ static constexpr float ScreenHeight = 240.f;
 using sprite = component< Sprite*, 'spr' >;
 using input = component < bool, 'inp' >;
 using physics = component < PhysicsComponent , 'phy'>; 
+using spawner = component < SpawnerComponent, 'spw'>;
 using IA = component < AIComponent, 'ia' >;
 //using Anim = component < AnimationComponent, 'anim'>;
 

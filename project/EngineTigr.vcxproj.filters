@@ -31,6 +31,9 @@
     <Filter Include="Source Files\src\utils">
       <UniqueIdentifier>{a30ca105-920d-4d6a-b542-1d370dbf9921}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\utils\sngtn">
+      <UniqueIdentifier>{8538eb91-b472-440b-ab6c-0e83d418a403}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -81,6 +84,12 @@
       <Filter>Source Files\src\utils</Filter>
     </ClInclude>
     <ClInclude Include="..\src\components\PhysicsComponent.h">
+      <Filter>Source Files\src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\sngtn\GameData.h">
+      <Filter>Source Files\src\utils\sngtn</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\components\SpawnerComponent.h">
       <Filter>Source Files\src\components</Filter>
     </ClInclude>
   </ItemGroup>

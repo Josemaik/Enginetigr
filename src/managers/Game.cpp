@@ -82,9 +82,24 @@ void Game::Run()
 			break;
 		case Gameplay:
 		{
-			for (auto& id : join<physics,sprite>()) {
-				auto& phy = get<physics>(id);
-				phy.lastposition = phy.position;
+
+			//check spawnable entities
+			for (auto id : system<spawner>()) {
+				auto& sp = get<spawner>(id);
+
+				sp.timer += delta;
+				if (sp.timer >= sp.interval /* && sp.enemiesSpawned < sp.maxEnemies*/) {
+					sp.timer = 0.0f;
+					//sp.enemiesSpawned++;
+
+					int enemyID = sp.nextEntityID++; // o lo que uses
+					add<sprite>(enemyID) = new Sprite("../data/enemy.png");
+					add<physics>(enemyID) = PhysicsComponent{
+							.position = vec2f{ScreenWidth / 2.5f, 20.f},//coger de xml sp.spawnPosition,
+							.velocity = vec2f{0.f, 60.f}
+					};
+					add<IA>(enemyID) = AIComponent{ .behaviour = Behaviours::BounceSimple };
+				}
 			}
 
 			//input
@@ -92,6 +107,9 @@ void Game::Run()
 				auto& phy = get<physics>(id);
 				auto& pos = phy.position;
 				auto& vel = phy.velocity;
+
+				phy.lastposition = phy.position;
+
 				if (engine.KeyDown('A'))
 				{
 					pos.first -= vel.first * delta;
@@ -106,6 +124,8 @@ void Game::Run()
 			{
 				auto& phy = get<physics>(id);
 				auto& bh = get<IA>(id).behaviour;
+
+				phy.lastposition = phy.position;
 				
 				if (bh == Behaviours::SquashStretch)
 				{
