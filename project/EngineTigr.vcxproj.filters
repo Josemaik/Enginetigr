@@ -28,6 +28,9 @@
     <Filter Include="Source Files\src\components">
       <UniqueIdentifier>{df18eec7-4425-4840-8d31-0c30471ae6f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\utils">
+      <UniqueIdentifier>{a30ca105-920d-4d6a-b542-1d370dbf9921}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -72,6 +75,12 @@
       <Filter>Source Files\src\components</Filter>
     </ClInclude>
     <ClInclude Include="..\src\components\AnimationComponent.h">
+      <Filter>Source Files\src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\Vector2.h">
+      <Filter>Source Files\src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\components\PhysicsComponent.h">
       <Filter>Source Files\src\components</Filter>
     </ClInclude>
   </ItemGroup>

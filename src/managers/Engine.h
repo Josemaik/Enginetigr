@@ -11,23 +11,21 @@
 //components
 #include "../components/AIComponent.h"
 #include "../components/AnimationComponent.h"
+#include "../components/PhysicsComponent.h"
+//utils
+#include "../utils/Vector2.h"
 
 //global variables
 static constexpr float timeStep = 1000.f / 60.f;
 static constexpr float ScreenWidth = 320.f;
 static constexpr float ScreenHeight = 240.f;
-// gamedev types and constants
-using vec2i = std::pair<int, int>;
-using vec2f = std::pair<float, float>;
+
 //components
-using sprite = component< Sprite, 'spr' >;
-using position = component< vec2f, 'pos' >;
-using lastposition = component< vec2f, 'posl' >;
+using sprite = component< Sprite*, 'spr' >;
 using input = component < bool, 'inp' >;
-using speedX = component < float, 'velx' >;
-using speedY = component < float, 'vely' >;
+using physics = component < PhysicsComponent , 'phy'>; 
 using IA = component < AIComponent, 'ia' >;
-using Anim = component < AnimationComponent, 'anim'>;
+//using Anim = component < AnimationComponent, 'anim'>;
 
 class Engine {
 public:

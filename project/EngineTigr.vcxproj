@@ -32,9 +32,11 @@
     <ClInclude Include="..\libs\tigr.h" />
     <ClInclude Include="..\src\components\AIComponent.h" />
     <ClInclude Include="..\src\components\AnimationComponent.h" />
+    <ClInclude Include="..\src\components\PhysicsComponent.h" />
     <ClInclude Include="..\src\managers\Engine.h" />
     <ClInclude Include="..\src\managers\Game.h" />
     <ClInclude Include="..\src\managers\SpriteManager.hpp" />
+    <ClInclude Include="..\src\utils\Vector2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

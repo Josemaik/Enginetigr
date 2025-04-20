@@ -85,7 +85,6 @@ struct Sprite
 
 	/*unsigned width{ 0 }, height{ 0 }, channels{ 0 };*/ //R,G,G,A
 	float x = 0, y = 0;
-	float scale = 0.f;
 	//std::vector<uint32_t> pixels;
 	//void *pixels{NULL};
 	std::string texture_file;
