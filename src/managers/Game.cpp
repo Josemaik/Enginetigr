@@ -33,25 +33,23 @@ void Game::Run()
 	add<lastposition>(enemie) = vec2f{};
 	add<IA>(enemie) = AIComponent{.behaviour = Behaviours::SquashStretch};*/
 	//Enemigo que rebota y pierde energía
-	//Sprite spritenemie1("../data/ball_mid.png");
-	//int enemiemid = 2;
-	//add<sprite>(enemiemid) = spritenemie1;
-	//add<speedY>(enemiemid) = 60.f;
-	//add<speedX>(enemiemid) = -60.f;
-	//add<position>(enemiemid) = vec2f(30.f, 0.f);
-	//add<lastposition>(enemiemid) = vec2f{};
-	//add<IA>(enemiemid) = AIComponent{ .behaviour = Behaviours::SquashStretch };
+	Sprite spritenemie1("../data/ball_mid.png");
+	int enemiemid = 1;
+	add<sprite>(enemiemid) = &spritenemie1;
+	add<physics>(enemiemid) = PhysicsComponent{ .position = vec2f(60.f, 0.f) ,
+																							.velocity = vec2f{30.f,0.f} , .gravity = 20.f,.bounciness = 0.8f};
+	add<IA>(enemiemid) = AIComponent{ .behaviour = Behaviours::SquashStretch };
 
 	//Creo enemie simple - rebotan normal y cambian de sentido al colisionar con cualquier objeto
-	Sprite spritenemie1("../data/hexagonball_frame1.png");
+	//Sprite spritenemie1("../data/hexagonball_frame1.png");
 	//sprite spritenemie2("../data/hexagonball_frame2.png");
 	//sprite spritenemie3("../data/hexagonball_frame3.png");
 
-	int enemie = 1;
+	/*int enemie = 1;
 	add<sprite>(enemie) = &spritenemie1;
 	add<physics>(enemie) = PhysicsComponent{.position = vec2f((ScreenWidth / 2.5f), 0.f) ,
 																						       .velocity = vec2f{30.f,30.f} };
-	add<IA>(enemie) = AIComponent{.behaviour = Behaviours::BounceSimple};
+	add<IA>(enemie) = AIComponent{.behaviour = Behaviours::BounceSimple};*/
 	//add<Anim>(enemie) = AnimationComponent{ .spritesheet{spritenemie1,spritenemie2,spritenemie3}, .framerate = 5.f,.currentframe = 0 };
 	
 	//Loop
@@ -66,7 +64,7 @@ void Game::Run()
 		float fps = 1.f / (delta + !delta);
 
 		//Wait
-		engine.Wait(timeStep);
+		//engine.Wait(timeStep);
 
 		engine.Clear();
 
@@ -107,11 +105,15 @@ void Game::Run()
 			for (auto& id : join<physics, sprite,IA>())
 			{
 				auto& phy = get<physics>(id);
-				/*auto& pos = phy.position;
-				auto& vel = phy.velocity;*/
-				/*float& speedx = get<speedX>(id);
-				float& speedy = get<speedY>(id);
-				vec2f& pos = get<position>(id);*/
+				auto& bh = get<IA>(id).behaviour;
+				
+				if (bh == Behaviours::SquashStretch)
+				{
+					// Aplicar gravedad
+					phy.velocity.second += phy.gravity * delta;
+				}
+
+				//update position
 				phy.position.first +=  phy.velocity.first * delta;
 				phy.position.second += phy.velocity.second * delta;
 			}
@@ -127,7 +129,7 @@ void Game::Run()
 					exit(1); // Opcional, o dejar que continúe mostrando algo.
 				}
 				//collision with screen bounds
-				bool leftWall = pos.first < 0;
+				bool leftWall = pos.first < 0; 
 				bool rightWall = (pos.first + spr->image->w) > ScreenWidth;
 				bool buttomWall = (pos.second + spr->image->h) > ScreenHeight;
 				bool upWall = pos.second < 0;
@@ -144,44 +146,58 @@ void Game::Run()
 					//check if is enemie
 					if (has<IA>(id))
 					{
+						auto& bh = get<IA>(id).behaviour;
 						if (rightWall || leftWall)
 						{
-							//lateral derecho
-							//auto& speed = phy.velocity.first;
-							phy.velocity.first *= -1;
+							if (bh == Behaviours::BounceSimple)
+							{
+								phy.velocity.first *= -1;
+							}
+							else
+							{
+								phy.velocity.first *= -1.f;
+								phy.gravity += 5.f;
+								phy.bounciness -= 0.1f;
+							}
 						}
 						if (buttomWall || upWall)
 						{
-							//auto& speed = ;
-							phy.velocity.second *= -1;
-							//colisiona abajo
-						}
-						//colision con otra esfera
-						if (id == 1)
-						{
-							//es el 2
-							auto& phy2 = get<physics>(2);
-							Sprite* spr2 = get<sprite>(2);
-							vec2f& pos2 = phy2.position;
-
-							if (spr2 != nullptr)
+							if (bh == Behaviours::BounceSimple)
 							{
-								if (engine.checkCircleCircle(pos, spr->image->w / 2.5f, pos2, spr2->image->w / 2.5f))
-								{
-									printf("Colision entre circulos\n");
-									auto& speedy2 = phy2.velocity.second;
-									auto& speedx2 = phy2.velocity.first;
-									speedy2 += 5;
-									speedx2 += 5;
-									speedy2 *= -1;
-									speedx2 *= -1;
-									auto& speedy = phy.velocity.second;
-									auto& speedx = phy.velocity.first;
-									speedy *= -1;
-									speedx *= -1;
-								}
+								phy.velocity.second *= -1;
+							}
+							else
+							{
+								phy.position.second -= spr->image->w / 2.5f;
+								phy.velocity.second *= -phy.bounciness;
 							}
 						}
+						//colision con otra esfera
+						//if (id == 1)
+						//{
+						//	//es el 2
+						//	auto& phy2 = get<physics>(2);
+						//	Sprite* spr2 = get<sprite>(2);
+						//	vec2f& pos2 = phy2.position;
+
+						//	if (spr2 != nullptr)
+						//	{
+						//		if (engine.checkCircleCircle(pos, spr->image->w / 2.5f, pos2, spr2->image->w / 2.5f))
+						//		{
+						//			printf("Colision entre circulos\n");
+						//			auto& speedy2 = phy2.velocity.second;
+						//			auto& speedx2 = phy2.velocity.first;
+						//			speedy2 += 5;
+						//			speedx2 += 5;
+						//			speedy2 *= -1;
+						//			speedx2 *= -1;
+						//			auto& speedy = phy.velocity.second;
+						//			auto& speedx = phy.velocity.first;
+						//			speedy *= -1;
+						//			speedx *= -1;
+						//		}
+						//	}
+						//}
 					}
 				}
 			}
