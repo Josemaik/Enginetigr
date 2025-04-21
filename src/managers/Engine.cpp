@@ -23,6 +23,7 @@ void Engine::LoadSprites(const char* filename)
       int gid = entityNode.child("id").text().as_int();
       std::string spriteSource = entityNode.child("sprite").attribute("texture_file").as_string();
       spritesPool[gid] = std::make_unique<Sprite>(spriteSource.c_str());
+      if (gid > 0) enemyEntities++;
     }
   }
 }
@@ -51,11 +52,9 @@ void Engine::CreatePlayer(GameData& gd)
 
 void Engine::CreateEnemy()
 {
-  int N = 3; //num enemies
-
   std::random_device rd; // Semilla
   std::mt19937 gen(rd()); 
-  std::uniform_int_distribution<> distrib(1, N); // Rango [1, N]
+  std::uniform_int_distribution<> distrib(1, enemyEntities); // Rango [1, N]
 
   int random_number = distrib(gen);
 
@@ -86,15 +85,41 @@ void Engine::CreateEnemy()
         float bounciness = entityNode.child("bounciness").text().as_float();
         std::string behaviourStr = entityNode.child("ai").attribute("behaviour").as_string();
 
+        float lifetime = entityNode.child("lifetime").text().as_float();
+
         //create entity
         int enemy = nextEntityID++;
         add<sprite>(enemy) = spritesPool.at(gid).get();
         add<physics>(enemy) = PhysicsComponent{ .position = vec2f(x,y),.velocity = vec2f{velx,vely}, .gravity = gravity,.bounciness = bounciness };
         add<IA>(enemy) = AIComponent{ .behaviour = strToBehaviour(behaviourStr) };
+        add<life>(enemy) = LifeComponent{ .Lifetime = lifetime };
         break;
       }
     }
   }
+}
+
+void Engine::DeleteEnemy(int id)
+{
+  del<sprite>(id);
+  del<physics>(id);
+  del<IA>(id);
+  del<life>(id);
+}
+
+void Engine::MoveEnemies()
+{
+  //desplazamos los enemigos y eliminamos el último
+  for (int id = 1; id < nextEntityID - 1; ++id)
+  {
+    if (has<sprite>(id + 1)) get<sprite>(id) = get<sprite>(id + 1);
+    if (has<physics>(id + 1)) get<physics>(id) = get<physics>(id + 1);
+    if (has<IA>(id + 1)) get<IA>(id) = get<IA>(id + 1);
+    if (has<life>(id + 1)) get<life>(id) = get<life>(id + 1);
+  }
+
+  nextEntityID--;
+  //DeleteEnemy(--nextEntityID);
 }
 
 Behaviours Engine::strToBehaviour(const std::string& str)
@@ -139,11 +164,9 @@ void Engine::ResetEntities(GameData& gd)
   phy.position = gd.spawnpoint;
 
   //clear enemies
-  for (int id = 1; id < nextEntityID; id++)
+  for (int id = 1; id <= nextEntityID; id++)
   {
-    del<physics>(id);
-    del<IA>(id);
-    del<sprite>(id);
+    DeleteEnemy(id);
   }
 
   nextEntityID = 1;
@@ -189,9 +212,9 @@ void Engine::Log(const char* text)
 	puts(text);
 }
 
-void Engine::Print(const char* text, int x ,int y)
+void Engine::Print(const char* text, int x ,int y, unsigned char r, unsigned char g, unsigned b)
 {
-	tigrPrint(m_screen, tfont, x, y, tigrRGB(0xff, 0xff, 0xff), text);
+	tigrPrint(m_screen, tfont, x, y, tigrRGB(r, g, b), text);
 }
 
 double Engine::getTime()

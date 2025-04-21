@@ -15,6 +15,7 @@
     <gravity>20.f</gravity>
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
+    <lifetime>14.f</lifetime>
     <sprite texture_file="../data/ball_mid.png"/>
   </entity>
  <entity>
@@ -25,16 +26,40 @@
     <gravity>20.f</gravity>
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
+    <lifetime>14.f</lifetime>
     <sprite texture_file="../data/ball_mid.png"/>
   </entity>
  <entity>
     <id>3</id>
     <name>circle_mid_3</name>
-    <position x = "60.f" y = "0.f" />
-    <velocity x = "80.f" y = "0.f" />
+    <position x = "60.f" y = "10.f" />
+    <velocity x = "80.f" y = "30.f" />
+    <gravity>0.f</gravity>
+    <bounciness>0.f</bounciness>
+    <ai behaviour="BounceSimple"/>
+    <lifetime>14.f</lifetime>
+    <sprite texture_file="../data/hexagonBall_frame1.png"/>
+  </entity>
+  <entity>
+    <id>4</id>
+    <name>circle_mid_4</name>
+    <position x = "100.f" y = "10.f" />
+    <velocity x = "-100.f" y = "30.f" />
     <gravity>20.f</gravity>
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
-    <sprite texture_file="../data/ball_mid.png"/>
+    <lifetime>11.f</lifetime>
+    <sprite texture_file="../data/ball_green.png"/>
+  </entity>
+<entity>
+    <id>5</id>
+    <name>hexagon_blue</name>
+    <position x = "150.f" y = "10.f" />
+    <velocity x = "-50.f" y = "50.f" />
+    <gravity>20.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="BounceSimple"/>
+    <lifetime>16.f</lifetime>
+    <sprite texture_file="../data/hexagon_blue.png"/>
   </entity>
 </entities>

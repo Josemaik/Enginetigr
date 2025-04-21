@@ -14,6 +14,7 @@
 #include "../components/AnimationComponent.h"
 #include "../components/PhysicsComponent.h"
 #include "../components/SpawnerComponent.h"
+#include "../components/LifeComponent.h"
 //utils
 #include "../utils/Vector2.h"
 //gamelay
@@ -32,6 +33,7 @@ using input = component < bool, 'inp' >;
 using physics = component < PhysicsComponent , 'phy'>; 
 using spawner = component < SpawnerComponent, 'spw'>;
 using IA = component < AIComponent, 'ia' >;
+using life = component < LifeComponent, 'life' >;
 //using Anim = component < AnimationComponent, 'anim'>;
 
 class Engine {
@@ -45,13 +47,17 @@ private:
 	const char* filenameEntities;
 	//entities ids
 	int nextEntityID = 0;
+	int enemyEntities = 0;
 public:
 
 	//Data-driving functions
 	void LoadSprites(const char* filename);
 	void CreatePlayer(GameData& gd);
 	void CreateEnemy();
+	void DeleteEnemy(int id);
+	void MoveEnemies();
 	Behaviours strToBehaviour(const std::string& str);
+	inline int GetMaxEntities() const { return nextEntityID; }
 
 	//score
 	void LoadRecord(GameData& gd);
@@ -80,7 +86,7 @@ public:
 	void Log(const char* text);
 
 	//Print text
-	void Print(const char* text, int x, int y);
+	void Print(const char* text, int x, int y, unsigned char r = 0xff, unsigned char g = 0xff, unsigned b = 0xff);
 
 	//Update deltaTime
 	double getTime();

@@ -77,15 +77,12 @@ void Game::Run()
 		{
 			engine.Clear(0, 255, 0);
 
-			//Load best score
-			//------------->
-
 			engine.Print("Press SPACE to Start GAME!",70.f, ScreenHeight / 2.5f);
 
 			//Show best Score
 			std::ostringstream ss;
 			ss << std::fixed << std::setprecision(2) << gamedata.bestScore;
-			engine.Print(("Best Record: " + engine.toString(ss.str()) + "s").c_str(), 100.f, ScreenHeight / 2.5f + 35.f);
+			engine.Print(("Best Record: " + engine.toString(ss.str()) + "s").c_str(), 100.f, ScreenHeight / 2.5f + 35.f, 0xff, 0xff, 0x00);
 
 			if (engine.KeyDown(TK_SPACE))
 			{
@@ -114,7 +111,7 @@ void Game::Run()
 			//		add<IA>(enemyID) = AIComponent{ .behaviour = Behaviours::BounceSimple };
 			//	}
 			//}
-
+			printf("Enemies alive: %d\n",engine.GetMaxEntities());
 			//input
 			for (auto& id : join<input,physics>()) {
 				auto& phy = get<physics>(id);
@@ -123,11 +120,11 @@ void Game::Run()
 
 				phy.lastposition = phy.position;
 
-				if (engine.KeyDown('A')) //meter flecha izquierda, click izquierdo
+				if (engine.KeyDown('A') || engine.KeyDown(TK_LEFT)) //meter flecha izquierda, click izquierdo
 				{
 					pos.first -= vel.first * delta;
 				}
-				if (engine.KeyDown('D')) //meter flecha derecha, click derecho
+				if (engine.KeyDown('D') || engine.KeyDown(TK_RIGHT)) //meter flecha derecha, click derecho
 				{
 					pos.first += vel.first * delta;
 				}
@@ -170,14 +167,22 @@ void Game::Run()
 				//update always
 				if (has<input>(id))
 				{
-					Sprite* sprenemy = get<sprite>(1);
-					if (sprenemy)
+					for (int i = 1; i < engine.GetMaxEntities(); i++)
 					{
-						auto& phyenemy = get<physics>(1);
-						if (engine.checkCircleRect(phyenemy.position, sprenemy->image->w / 2.5f, pos, vec2f{ spr->image->w,spr->image->h }))
+						Sprite* sprenemy = get<sprite>(i);
+						if (sprenemy)
 						{
-							printf("Colision con player\n");
-							CurrentState = States::Dead;
+							auto& phyenemy = get<physics>(i);
+							/*if (engine.checkCircleRect(phyenemy.position, sprenemy->image->w / 2.5f, pos, vec2f{ spr->image->w,spr->image->h }))
+							{
+								printf("Colision con player\n");
+								CurrentState = States::Dead;
+							}*/
+							if (engine.checkCircleCircle(phyenemy.position, sprenemy->image->w / 2.5f, pos, spr->image->w / 2.5f))
+							{
+								printf("Colision con player\n");
+								CurrentState = States::Dead;
+							}
 						}
 					}
 				}
@@ -204,7 +209,7 @@ void Game::Run()
 							else
 							{
 								phy.velocity.first *= -1.f;
-								phy.gravity += 5.f;
+								//phy.gravity += 5.f;
 								phy.bounciness -= 0.1f;
 							}
 						}
@@ -293,6 +298,15 @@ void Game::Run()
 				get<sprite>(id)->Draw(engine.getScreen());
 			}
 
+			//life
+			for (auto& id : join<sprite, life>()) {
+				auto& lifec = get<life>(id);
+				lifec.current_time += delta;
+				if (lifec.current_time >= lifec.Lifetime) {
+					engine.MoveEnemies();
+				}
+			}
+
 			//HUD
 			engine.Print((engine.toString(fps) + " fps").c_str(), 0, 5);
 
@@ -301,7 +315,11 @@ void Game::Run()
 
 			std::ostringstream ss;
 			ss << std::fixed << std::setprecision(2) << gamedata.GlobalTimer;
-			engine.Print(("Current Time: " + engine.toString(ss.str()) + "s").c_str(), 160, 5);
+			engine.Print(("Current Time: " + engine.toString(ss.str()) + "s").c_str(), 190, 5,0x00,0xff,0x00);
+
+			std::ostringstream ss2;
+			ss2 << std::fixed << std::setprecision(2) << gamedata.bestScore;
+			engine.Print(("Hi-Score: " + engine.toString(ss2.str()) + "s").c_str(), 80, 5, 0xff,0xff,0x00);
 
 			gamedata.GlobalTimer += delta;
 		}
