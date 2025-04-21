@@ -3,6 +3,103 @@
 #include <cassert>
 #include <string>
 #include <iostream>
+#include <random>
+#include "../utils/types.h"
+
+void Engine::LoadSprites(const char* filename)
+{
+  filenameEntities = filename;
+  //Load sprites from xml doc
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file(filename);
+  if (result)
+  {
+    pugi::xml_node entities = doc.child("entities");
+    for (pugi::xml_node entityNode = entities.child("entity");
+      entityNode; // Condición correcta
+      entityNode = entityNode.next_sibling("entity"))
+    {
+      int gid = entityNode.child("id").text().as_int();
+      std::string spriteSource = entityNode.child("sprite").attribute("texture_file").as_string();
+      spritesPool[gid] = std::make_unique<Sprite>(spriteSource.c_str());
+    }
+  }
+}
+
+void Engine::CreatePlayer()
+{
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file(filenameEntities);
+  if (result)
+  {
+    pugi::xml_node playerNode = doc.child("entities").first_child();
+    //read values from xml
+    float x = playerNode.child("position").attribute("x").as_float();
+    float y = playerNode.child("position").attribute("y").as_float();
+    float velx = playerNode.child("velocity").attribute("x").as_float();
+    float vely = playerNode.child("velocity").attribute("y").as_float();
+    //add components
+    int player = nextEntityID++;
+    add<sprite>(player) = spritesPool.at(player).get();
+    add<physics>(player) = PhysicsComponent{ .position = vec2f(x, y),.velocity = vec2f{velx,vely} };
+    add<input>(player) = true;
+  }
+}
+
+void Engine::CreateEnemy()
+{
+  int N = 3; //num enemies
+
+  std::random_device rd; // Semilla
+  std::mt19937 gen(rd()); 
+  std::uniform_int_distribution<> distrib(1, N); // Rango [1, N]
+
+  int random_number = distrib(gen);
+
+  printf("Random: %d\n", random_number);
+
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file(filenameEntities);
+  if (result)
+  {
+    pugi::xml_node entitiesNode = doc.child("entities");
+    for (pugi::xml_node entityNode = entitiesNode.child("entity");
+      entityNode;
+      entityNode = entityNode.next_sibling("entity"))
+    {
+      int gid = entityNode.child("id").text().as_int();
+      if (gid == random_number)
+      {
+        std::string name = entityNode.child("name").text().as_string();
+        printf("Lo he encontrado: %s\n", name.c_str());
+
+        //read values from xml
+        float x = entityNode.child("position").attribute("x").as_float();
+        float y = entityNode.child("position").attribute("y").as_float();
+        float velx = entityNode.child("velocity").attribute("x").as_float();
+        float vely = entityNode.child("velocity").attribute("y").as_float();
+
+        float gravity = entityNode.child("gravity").text().as_float();
+        float bounciness = entityNode.child("bounciness").text().as_float();
+        std::string behaviourStr = entityNode.child("ai").attribute("behaviour").as_string();
+
+        //create entity
+        int enemy = nextEntityID++;
+        add<sprite>(enemy) = spritesPool.at(gid).get();
+        add<physics>(enemy) = PhysicsComponent{ .position = vec2f(x,y),.velocity = vec2f{velx,vely}, .gravity = gravity,.bounciness = bounciness };
+        add<IA>(enemy) = AIComponent{ .behaviour = strToBehaviour(behaviourStr) };
+        break;
+      }
+    }
+  }
+}
+
+Behaviours Engine::strToBehaviour(const std::string& str)
+{
+  if (str == "SquashStretch") return Behaviours::SquashStretch;
+  if (str == "BounceSimple") return Behaviours::BounceSimple;
+  return Behaviours::BounceSimple;
+}
 
 bool Engine::Init() {
 	m_screen = tigrWindow(ScreenWidth, ScreenHeight, "Arquitectura", 0);
@@ -175,9 +272,4 @@ void Engine::PlayDemo()
   assert(!has<name>(player));
 
   assert((join<name, position>().size() == 1));
-}
-
-void Engine::CreateEntity()
-{
-  
 }

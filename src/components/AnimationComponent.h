@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../managers/SpriteManager.hpp"
+#include "../managers/Sprite.hpp"
 
 struct AnimationComponent
 {

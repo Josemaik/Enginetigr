@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <string>
 #include <sstream>
+#include <map>
 //ECS
 #include "ecs.hh"
-#include "Spritemanager.hpp"
+#include "Sprite.hpp"
 //components
 #include "../components/AIComponent.h"
 #include "../components/AnimationComponent.h"
@@ -15,6 +16,9 @@
 #include "../components/SpawnerComponent.h"
 //utils
 #include "../utils/Vector2.h"
+//gamelay
+#include "Spawner.h"
+
 
 //global variables
 static constexpr float timeStep = 1000.f / 60.f;
@@ -34,7 +38,19 @@ public:
 	bool	m_isRunning = false;
 	Tigr* m_screen = nullptr;
 	float time = 0.f;
+private:
+	//Sprites
+	std::map<int, std::unique_ptr<Sprite>> spritesPool;
+	const char* filenameEntities;
+	//entities ids
+	int nextEntityID = 0;
+public:
 
+	//Data-driving functions
+	void LoadSprites(const char* filename);
+	void CreatePlayer();
+	void CreateEnemy();
+	Behaviours strToBehaviour(const std::string& str);
 	//Inicializar
 	bool Init();
 
@@ -76,8 +92,6 @@ public:
 	void Wait(float ms);
 
 	void PlayDemo();
-
-	void CreateEntity();
 
 
 	//Collisions

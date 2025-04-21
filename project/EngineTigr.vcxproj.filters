@@ -42,7 +42,7 @@
     <ClCompile Include="..\src\managers\Engine.cpp">
       <Filter>Source Files\src\managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\managers\SpriteManager.cpp">
+    <ClCompile Include="..\src\managers\Sprite.cpp">
       <Filter>Source Files\src\managers</Filter>
     </ClCompile>
     <ClCompile Include="..\libs\tigr.c">
@@ -57,9 +57,12 @@
     <ClCompile Include="..\src\managers\Game.cpp">
       <Filter>Source Files\src\managers</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\managers\Spawner.cpp">
+      <Filter>Source Files\src\managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\managers\SpriteManager.hpp">
+    <ClInclude Include="..\src\managers\Sprite.hpp">
       <Filter>Source Files\src\managers</Filter>
     </ClInclude>
     <ClInclude Include="..\src\managers\Engine.h">
@@ -83,14 +86,20 @@
     <ClInclude Include="..\src\utils\Vector2.h">
       <Filter>Source Files\src\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\components\PhysicsComponent.h">
-      <Filter>Source Files\src\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\utils\sngtn\GameData.h">
       <Filter>Source Files\src\utils\sngtn</Filter>
     </ClInclude>
     <ClInclude Include="..\src\components\SpawnerComponent.h">
       <Filter>Source Files\src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\managers\Spawner.h">
+      <Filter>Source Files\src\managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\components\PhysicsComponent.h">
+      <Filter>Source Files\src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\utils\types.h">
+      <Filter>Source Files\src\utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

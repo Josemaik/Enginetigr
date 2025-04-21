@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entities>
+  <entity>
+    <id>0</id>
+    <name>player</name>
+    <position x = "148.5f" y = "218.f" />
+    <velocity x = "60.f" y = "0.f" />
+    <sprite texture_file="../data/squinkle.png"/>
+  </entity>
+  <entity>
+    <id>1</id>
+    <name>circle_mid_1</name>
+    <position x = "60.f" y = "0.f" />
+    <velocity x = "60.f" y = "0.f" />
+    <gravity>20.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <sprite texture_file="../data/ball_mid.png"/>
+  </entity>
+ <entity>
+    <id>2</id>
+    <name>circle_mid_2</name>
+    <position x = "60.f" y = "0.f" />
+    <velocity x = "30.f" y = "0.f" />
+    <gravity>20.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <sprite texture_file="../data/ball_mid.png"/>
+  </entity>
+ <entity>
+    <id>3</id>
+    <name>circle_mid_3</name>
+    <position x = "60.f" y = "0.f" />
+    <velocity x = "80.f" y = "0.f" />
+    <gravity>20.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <sprite texture_file="../data/ball_mid.png"/>
+  </entity>
+</entities>

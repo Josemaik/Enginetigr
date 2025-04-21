@@ -24,7 +24,8 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\managers\Engine.cpp" />
     <ClCompile Include="..\src\managers\Game.cpp" />
-    <ClCompile Include="..\src\managers\SpriteManager.cpp" />
+    <ClCompile Include="..\src\managers\Spawner.cpp" />
+    <ClCompile Include="..\src\managers\Sprite.cpp" />
     <ClCompile Include="Lua.c" />
   </ItemGroup>
   <ItemGroup>
@@ -36,8 +37,10 @@
     <ClInclude Include="..\src\components\SpawnerComponent.h" />
     <ClInclude Include="..\src\managers\Engine.h" />
     <ClInclude Include="..\src\managers\Game.h" />
-    <ClInclude Include="..\src\managers\SpriteManager.hpp" />
+    <ClInclude Include="..\src\managers\Spawner.h" />
+    <ClInclude Include="..\src\managers\Sprite.hpp" />
     <ClInclude Include="..\src\utils\sngtn\GameData.h" />
+    <ClInclude Include="..\src\utils\types.h" />
     <ClInclude Include="..\src\utils\Vector2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

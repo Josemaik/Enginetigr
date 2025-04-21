@@ -1,10 +1,6 @@
 #pragma once
 
-enum class Behaviours
-{
-	BounceSimple,
-	SquashStretch
-};
+#include "../utils/types.h"
 
 struct AIComponent
 {

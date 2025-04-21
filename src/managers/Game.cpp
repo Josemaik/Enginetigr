@@ -8,21 +8,22 @@
 
 void Game::Run()
 {
-	//Load de un xml
-	Sprite spr2;
-	spr2.Load(spr2, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"../data/squinkle.png\" />");
-	spr2.x = (ScreenWidth / 2.f) - (spr2.image->w / 2.f);
-	spr2.y = ScreenHeight - spr2.image->h;
-	
-	//Creo player
-	int player = 0;
-	add<sprite>(player) = &spr2;
-	//add<position>(player) = ;
-	//add<speedX>(player) = 60.f;
-	add<physics>(player) = PhysicsComponent{ .position = vec2f((ScreenWidth / 2.f) - (spr2.image->w / 2.f), ScreenHeight - spr2.image->h),
-																					 .velocity = vec2f{60.f,0.f} };
-	add<input>(player) = true;
-	//add<lastposition>(player) = vec2f{};
+	//Load Player from xml
+	//Sprite spriteplayer;
+	//spriteplayer.Load(spriteplayer, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"../data/squinkle.png\" />");
+	engine.LoadSprites("../data/entities.txt");
+	engine.CreatePlayer();
+
+	Spawner spawner{ 5.f };
+	////Creo player
+	//int player = 0;
+	//add<sprite>(player) = &spriteplayer;
+	////add<position>(player) = ;
+	////add<speedX>(player) = 60.f;
+	//Sprite* spr = get<sprite>(player);
+	//add<physics>(player) = PhysicsComponent{ .position = vec2f((ScreenWidth / 2.f) - (spr->image->w / 2.f), ScreenHeight - spr->image->h),
+	//																				 .velocity = vec2f{60.f,0.f} };
+	//add<input>(player) = true;
 	//Enemigo que rebota y pierde energía
 	/*Sprite spritenemie("../data/ball.png");
 	int enemie = 1;
@@ -33,12 +34,12 @@ void Game::Run()
 	add<lastposition>(enemie) = vec2f{};
 	add<IA>(enemie) = AIComponent{.behaviour = Behaviours::SquashStretch};*/
 	//Enemigo que rebota y pierde energía
-	Sprite spritenemie1("../data/ball_mid.png");
-	int enemiemid = 1;
-	add<sprite>(enemiemid) = &spritenemie1;
-	add<physics>(enemiemid) = PhysicsComponent{ .position = vec2f(60.f, 0.f) ,
-																							.velocity = vec2f{30.f,0.f} , .gravity = 20.f,.bounciness = 0.8f};
-	add<IA>(enemiemid) = AIComponent{ .behaviour = Behaviours::SquashStretch };
+	//Sprite spritenemie1("../data/ball_mid.png");
+	//int enemiemid = 1;
+	//add<sprite>(enemiemid) = &spritenemie1;
+	//add<physics>(enemiemid) = PhysicsComponent{ .position = vec2f(60.f, 0.f) ,
+	//																						.velocity = vec2f{30.f,0.f} , .gravity = 20.f,.bounciness = 0.8f};
+	//add<IA>(enemiemid) = AIComponent{ .behaviour = Behaviours::SquashStretch };
 
 	//Creo enemie simple - rebotan normal y cambian de sentido al colisionar con cualquier objeto
 	//Sprite spritenemie1("../data/hexagonball_frame1.png");
@@ -84,23 +85,23 @@ void Game::Run()
 		{
 
 			//check spawnable entities
-			for (auto id : system<spawner>()) {
-				auto& sp = get<spawner>(id);
+			//for (auto id : system<spawner>()) {
+			//	auto& sp = get<spawner>(id);
 
-				sp.timer += delta;
-				if (sp.timer >= sp.interval /* && sp.enemiesSpawned < sp.maxEnemies*/) {
-					sp.timer = 0.0f;
-					//sp.enemiesSpawned++;
+			//	sp.timer += delta;
+			//	if (sp.timer >= sp.interval /* && sp.enemiesSpawned < sp.maxEnemies*/) {
+			//		sp.timer = 0.0f;
+			//		//sp.enemiesSpawned++;
 
-					int enemyID = sp.nextEntityID++; // o lo que uses
-					add<sprite>(enemyID) = new Sprite("../data/enemy.png");
-					add<physics>(enemyID) = PhysicsComponent{
-							.position = vec2f{ScreenWidth / 2.5f, 20.f},//coger de xml sp.spawnPosition,
-							.velocity = vec2f{0.f, 60.f}
-					};
-					add<IA>(enemyID) = AIComponent{ .behaviour = Behaviours::BounceSimple };
-				}
-			}
+			//		int enemyID = sp.nextEntityID++; // o lo que uses
+			//		add<sprite>(enemyID) = new Sprite("../data/ball_mid.png");
+			//		add<physics>(enemyID) = PhysicsComponent{
+			//				.position = vec2f{ScreenWidth / 2.5f, 20.f},//coger de xml sp.spawnPosition,
+			//				.velocity = vec2f{0.f, 60.f}
+			//		};
+			//		add<IA>(enemyID) = AIComponent{ .behaviour = Behaviours::BounceSimple };
+			//	}
+			//}
 
 			//input
 			for (auto& id : join<input,physics>()) {
@@ -266,6 +267,9 @@ void Game::Run()
 
 			//HUD
 			engine.Print((engine.toString(fps) + " fps").c_str(), 0, 5);
+
+			//update spawner
+			spawner.Update(delta, engine);
 
 			std::ostringstream ss;
 			ss << std::fixed << std::setprecision(2) << GlobalTimer;
