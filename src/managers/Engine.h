@@ -53,6 +53,9 @@ public:
 	void CreateEnemy();
 	Behaviours strToBehaviour(const std::string& str);
 
+	//score
+	void LoadRecord(GameData& gd);
+	void SaveScore(float newscore);
 	//entitymanager
 	void ResetEntities(GameData& gd);
 

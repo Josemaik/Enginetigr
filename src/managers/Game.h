@@ -14,7 +14,6 @@ public:
 	void Run();
 private:
 	Engine& engine;
-	float GlobalTimer = 0.f;
 	States CurrentState = Menu;
 };
 

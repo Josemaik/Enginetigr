@@ -104,6 +104,35 @@ Behaviours Engine::strToBehaviour(const std::string& str)
   return Behaviours::BounceSimple;
 }
 
+void Engine::LoadRecord(GameData& gd)
+{
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_file("../data/score.txt");
+  if (result)
+  {
+    gd.bestScore = doc.child("score").text().as_float();
+  }
+}
+
+void Engine::SaveScore(float newscore)
+{
+  pugi::xml_document doc;
+
+  // Crear el nodo raíz "score"
+  pugi::xml_node scoreNode = doc.append_child("score");
+
+  // Establecer el texto con el valor del récord
+  scoreNode.text().set(newscore);
+
+  // Guardar el documento en el archivo
+  bool saveSucceeded = doc.save_file("../data/score.txt");
+
+  if (!saveSucceeded)
+  {
+    std::cerr << "Error al guardar el archivo de récord." << std::endl;
+  }
+}
+
 void Engine::ResetEntities(GameData& gd)
 {
   auto& phy = get<physics>(0);
