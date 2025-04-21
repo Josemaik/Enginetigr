@@ -19,6 +19,7 @@
 //gamelay
 #include "Spawner.h"
 
+struct GameData;
 
 //global variables
 static constexpr float timeStep = 1000.f / 60.f;
@@ -48,9 +49,13 @@ public:
 
 	//Data-driving functions
 	void LoadSprites(const char* filename);
-	void CreatePlayer();
+	void CreatePlayer(GameData& gd);
 	void CreateEnemy();
 	Behaviours strToBehaviour(const std::string& str);
+
+	//entitymanager
+	void ResetEntities(GameData& gd);
+
 	//Inicializar
 	bool Init();
 
@@ -64,7 +69,7 @@ public:
 	bool isRunning();
 
 	//Clear background with colour
-	void Clear();
+	void Clear(unsigned char r, unsigned char g, unsigned char b);
 
 	//Update Screen
 	void DoSystemEventsAndUpdateScreen();
@@ -109,6 +114,79 @@ public:
 		if (distance < (radius1 + radius2))
 		{
 			return true;
+		}
+		return false;
+	}
+	////////////////////////////////////
+	//CIRCLE-RECT
+	bool checkCircleRect(const vec2f& circlePos, float circleRadius, const vec2f& rectPos, const vec2f& rectSize)
+	{
+		float left = rectPos.first;
+		float right = rectPos.first + rectSize.first;
+		float top = rectPos.second;
+		float bottom = rectPos.second + rectSize.second;
+		vec2f lefttop{ left ,top };
+		vec2f leftbottom{ left,bottom };
+		vec2f righttop{ right,top };
+		vec2f rightbottom{ right,bottom };
+
+		// Comprobamos si está dentro del circulo
+		if (circlePos.first > left && circlePos.first < right &&
+			circlePos.second >= top && circlePos.second < bottom)
+		{
+			return true;
+		}
+		else {
+			// Comprobamos cuadrantes esquinas
+			if (circlePos.first < left && circlePos.second < top)
+			{
+				// esquina superior izquierda
+				if (euclidean_distance(lefttop,circlePos) < circleRadius)
+				{
+					return true;
+				}
+			}
+			if (circlePos.first < left && circlePos.second > bottom)
+			{
+				// esquina inferior izquierda
+				if (euclidean_distance(leftbottom,circlePos) < circleRadius)
+				{
+					return true;
+				}
+			}
+			if (circlePos.first > right && circlePos.second < top)
+			{
+				// esquina superior deerecha
+				if (euclidean_distance(righttop,circlePos) < circleRadius)
+				{
+					return true;
+				}
+			}
+			if (circlePos.first > right && circlePos.second > bottom)
+			{
+				// esquina inferior deerecha
+				if (euclidean_distance(rightbottom,circlePos) < circleRadius)
+				{
+					return true;
+				}
+			}
+			// Comprobamos bordes horizontales y verticales
+			if (circlePos.first >= left && circlePos.second <= right)
+			{
+				// Bordes superior e inferior
+				if (std::abs(circlePos.second - top) < circleRadius || std::abs(circlePos.second - bottom) < circleRadius)
+				{
+					return true;
+				}
+			}
+			if (circlePos.second >= top && circlePos.second <= bottom)
+			{
+				// Bordes izquierdo y derecho
+				if (std::abs(circlePos.first - left) < circleRadius || std::abs(circlePos.first - right) < circleRadius)
+				{
+					return true;
+				}
+			}
 		}
 		return false;
 	}

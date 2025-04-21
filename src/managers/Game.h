@@ -2,7 +2,7 @@
 
 class Engine;
 
-enum States{Menu, Gameplay};
+enum States{Menu, Gameplay, Dead};
 
 class Game
 {

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "../src/managers/Engine.h"
+#include "../utils/sngtn/GameData.h"
 #include <iomanip>
 #include <sstream>
 #include <iostream>
@@ -11,8 +12,9 @@ void Game::Run()
 	//Load Player from xml
 	//Sprite spriteplayer;
 	//spriteplayer.Load(spriteplayer, "<?xml version=\"1.0\"?><sprite x = \"123\" y = \"456\" texture_file = \"../data/squinkle.png\" />");
+	GameData gamedata;
 	engine.LoadSprites("../data/entities.txt");
-	engine.CreatePlayer();
+	engine.CreatePlayer(gamedata);
 
 	Spawner spawner{ 5.f };
 	////Creo player
@@ -67,13 +69,16 @@ void Game::Run()
 		//Wait
 		//engine.Wait(timeStep);
 
-		engine.Clear();
-
 		switch (CurrentState)
 		{
 		case Menu:
 		{
-			engine.Print("Press ENTER to Start GAME!",70.f, ScreenHeight / 2.5f);
+			engine.Clear(0, 255, 0);
+
+			//Load best score
+			//------------->
+
+			engine.Print("Press SPACE to Start GAME!",70.f, ScreenHeight / 2.5f);
 
 			if (engine.KeyDown(TK_SPACE))
 			{
@@ -83,7 +88,7 @@ void Game::Run()
 			break;
 		case Gameplay:
 		{
-
+			engine.Clear(0, 0, 255);
 			//check spawnable entities
 			//for (auto id : system<spawner>()) {
 			//	auto& sp = get<spawner>(id);
@@ -111,11 +116,11 @@ void Game::Run()
 
 				phy.lastposition = phy.position;
 
-				if (engine.KeyDown('A'))
+				if (engine.KeyDown('A')) //meter flecha izquierda, click izquierdo
 				{
 					pos.first -= vel.first * delta;
 				}
-				if (engine.KeyDown('D'))
+				if (engine.KeyDown('D')) //meter flecha derecha, click derecho
 				{
 					pos.first += vel.first * delta;
 				}
@@ -155,11 +160,26 @@ void Game::Run()
 				bool buttomWall = (pos.second + spr->image->h) > ScreenHeight;
 				bool upWall = pos.second < 0;
 
+				//update always
+				if (has<input>(id))
+				{
+					Sprite* sprenemy = get<sprite>(1);
+					if (sprenemy)
+					{
+						auto& phyenemy = get<physics>(1);
+						if (engine.checkCircleRect(phyenemy.position, sprenemy->image->w / 2.5f, pos, vec2f{ spr->image->w,spr->image->h }))
+						{
+							printf("Colision con player\n");
+							CurrentState = States::Dead;
+						}
+					}
+				}
+
 				//update only if position has changed
 				if (pos != laspos)
 				{
 					//check if is player
-					if (has<input>(id) && leftWall || rightWall)
+					if (has<input>(id) && (leftWall || rightWall))
 					{
 						pos.first = laspos.first;
 						pos.second = laspos.second;
@@ -189,7 +209,8 @@ void Game::Run()
 							}
 							else
 							{
-								phy.position.second -= spr->image->w / 2.5f;
+								//phy.position.second -= spr->image->w / 2.5f;
+								phy.position.second = laspos.second;
 								phy.velocity.second *= -phy.bounciness;
 							}
 						}
@@ -278,6 +299,30 @@ void Game::Run()
 			GlobalTimer += delta;
 		}
 			break;
+		case Dead:
+		{
+			engine.Clear(255, 0, 0);
+
+			engine.Print("You died! :(", ScreenWidth / 2.5f, ScreenHeight / 2.5f);
+
+			engine.Print("Press SPACE for a new Try!", 70.f, ScreenHeight / 1.5f);
+
+			if (engine.KeyDown(TK_SPACE))
+			{
+				//reset timer
+				GlobalTimer = 0.f;
+
+				//show your current score
+				//save score > bestscore
+				//------------->
+				//reposition player and remove enemies
+				engine.ResetEntities(gamedata);
+				spawner.Reset();
+
+				//chage gameplay
+				CurrentState = States::Gameplay;
+			}
+		}
 		default:
 			break;
 		}

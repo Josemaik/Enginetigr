@@ -13,6 +13,8 @@ public:
     :interval(_interval)
   {}
 
+  void Reset();
+
   void Update(float& delta, Engine& engine);
   
 };

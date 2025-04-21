@@ -4,6 +4,11 @@
 #include <sstream>
 #include <iostream>
 
+void Spawner::Reset()
+{
+  timer = 0.f;
+}
+
 void Spawner::Update(float& delta, Engine& engine)
 {
   timer += delta;

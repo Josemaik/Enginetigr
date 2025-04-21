@@ -5,6 +5,7 @@
 #include <iostream>
 #include <random>
 #include "../utils/types.h"
+#include "../utils/sngtn/GameData.h"
 
 void Engine::LoadSprites(const char* filename)
 {
@@ -26,7 +27,7 @@ void Engine::LoadSprites(const char* filename)
   }
 }
 
-void Engine::CreatePlayer()
+void Engine::CreatePlayer(GameData& gd)
 {
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_file(filenameEntities);
@@ -43,6 +44,8 @@ void Engine::CreatePlayer()
     add<sprite>(player) = spritesPool.at(player).get();
     add<physics>(player) = PhysicsComponent{ .position = vec2f(x, y),.velocity = vec2f{velx,vely} };
     add<input>(player) = true;
+
+    gd.spawnpoint = vec2f(x, y);
   }
 }
 
@@ -101,6 +104,22 @@ Behaviours Engine::strToBehaviour(const std::string& str)
   return Behaviours::BounceSimple;
 }
 
+void Engine::ResetEntities(GameData& gd)
+{
+  auto& phy = get<physics>(0);
+  phy.position = gd.spawnpoint;
+
+  //clear enemies
+  for (int id = 1; id < nextEntityID; id++)
+  {
+    del<physics>(id);
+    del<IA>(id);
+    del<sprite>(id);
+  }
+
+  nextEntityID = 1;
+}
+
 bool Engine::Init() {
 	m_screen = tigrWindow(ScreenWidth, ScreenHeight, "Arquitectura", 0);
 	if (m_screen == nullptr) return false;
@@ -126,9 +145,9 @@ bool Engine::isRunning() {
 	return m_isRunning;
 }
 
-void Engine::Clear()
+void Engine::Clear(unsigned char r, unsigned char g, unsigned char b)
 {
-	tigrClear(m_screen, tigrRGB(0, 0, 255));
+	tigrClear(m_screen, tigrRGB(r, g, b));
 }
 
 void Engine::DoSystemEventsAndUpdateScreen()
