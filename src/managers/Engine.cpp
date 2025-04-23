@@ -185,6 +185,11 @@ bool Engine::KeyDown(int key)
   return tigrKeyHeld(m_screen, key);
 }
 
+//bool Engine::RightMouse()
+//{
+//  return tigrMouse(m_screen,)
+//}
+
 bool Engine::Quit() {
 	tigrFree(m_screen);
 	m_screen = nullptr;

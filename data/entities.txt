@@ -44,11 +44,11 @@
     <id>4</id>
     <name>circle_mid_4</name>
     <position x = "100.f" y = "10.f" />
-    <velocity x = "-100.f" y = "30.f" />
+    <velocity x = "-60.f" y = "30.f" />
     <gravity>20.f</gravity>
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
-    <lifetime>11.f</lifetime>
+    <lifetime>14.f</lifetime>
     <sprite texture_file="../data/ball_green.png"/>
   </entity>
 <entity>
@@ -59,7 +59,18 @@
     <gravity>20.f</gravity>
     <bounciness>0.8f</bounciness>
     <ai behaviour="BounceSimple"/>
-    <lifetime>16.f</lifetime>
+    <lifetime>14.f</lifetime>
     <sprite texture_file="../data/hexagon_blue.png"/>
+  </entity>
+  <entity>
+    <id>6</id>
+    <name>Big ball</name>
+    <position x = "100.f" y = "10.f" />
+    <velocity x = "30.f" y = "30.f" />
+    <gravity>30.f</gravity>
+    <bounciness>1.f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <lifetime>14.f</lifetime>
+    <sprite texture_file="../data/ball.png"/>
   </entity>
 </entities>

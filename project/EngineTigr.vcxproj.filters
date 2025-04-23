@@ -34,6 +34,9 @@
     <Filter Include="Source Files\src\utils\sngtn">
       <UniqueIdentifier>{8538eb91-b472-440b-ab6c-0e83d418a403}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\systems">
+      <UniqueIdentifier>{444a1296-a551-4a92-bf89-f1515a16de14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp">
@@ -59,6 +62,21 @@
     </ClCompile>
     <ClCompile Include="..\src\managers\Spawner.cpp">
       <Filter>Source Files\src\managers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\systems\InputSystem.cpp">
+      <Filter>Source Files\src\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\systems\PhysicsSystem.cpp">
+      <Filter>Source Files\src\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\systems\CollisionSystem.cpp">
+      <Filter>Source Files\src\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\systems\RenderSystem.cpp">
+      <Filter>Source Files\src\systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\systems\LifeSystem.cpp">
+      <Filter>Source Files\src\systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +121,21 @@
     </ClInclude>
     <ClInclude Include="..\src\components\LifeComponent.h">
       <Filter>Source Files\src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\systems\InputSystem.h">
+      <Filter>Source Files\src\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\systems\PhysicsSystem.h">
+      <Filter>Source Files\src\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\systems\CollisionSystem.h">
+      <Filter>Source Files\src\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\systems\RenderSystem.h">
+      <Filter>Source Files\src\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\systems\LifeSystem.h">
+      <Filter>Source Files\src\systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

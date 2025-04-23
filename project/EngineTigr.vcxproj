@@ -26,6 +26,11 @@
     <ClCompile Include="..\src\managers\Game.cpp" />
     <ClCompile Include="..\src\managers\Spawner.cpp" />
     <ClCompile Include="..\src\managers\Sprite.cpp" />
+    <ClCompile Include="..\src\systems\CollisionSystem.cpp" />
+    <ClCompile Include="..\src\systems\InputSystem.cpp" />
+    <ClCompile Include="..\src\systems\LifeSystem.cpp" />
+    <ClCompile Include="..\src\systems\PhysicsSystem.cpp" />
+    <ClCompile Include="..\src\systems\RenderSystem.cpp" />
     <ClCompile Include="Lua.c" />
   </ItemGroup>
   <ItemGroup>
@@ -40,6 +45,11 @@
     <ClInclude Include="..\src\managers\Game.h" />
     <ClInclude Include="..\src\managers\Spawner.h" />
     <ClInclude Include="..\src\managers\Sprite.hpp" />
+    <ClInclude Include="..\src\systems\CollisionSystem.h" />
+    <ClInclude Include="..\src\systems\InputSystem.h" />
+    <ClInclude Include="..\src\systems\LifeSystem.h" />
+    <ClInclude Include="..\src\systems\PhysicsSystem.h" />
+    <ClInclude Include="..\src\systems\RenderSystem.h" />
     <ClInclude Include="..\src\utils\sngtn\GameData.h" />
     <ClInclude Include="..\src\utils\types.h" />
     <ClInclude Include="..\src\utils\Vector2.h" />

@@ -17,6 +17,7 @@
 #include "../components/LifeComponent.h"
 //utils
 #include "../utils/Vector2.h"
+#include "../utils/sngtn/GameData.h"
 //gamelay
 #include "Spawner.h"
 

@@ -1,8 +1,12 @@
 #pragma once
 
-class Engine;
+#include "../systems/InputSystem.h"
+#include "../systems/PhysicsSystem.h"
+#include "../systems/CollisionSystem.h"
+#include "../systems/RenderSystem.h"
+#include "../systems/LifeSystem.h"
 
-enum States{Menu, Gameplay, Dead};
+class Engine;
 
 class Game
 {
@@ -14,6 +18,11 @@ public:
 	void Run();
 private:
 	Engine& engine;
-	States CurrentState = Menu;
+	//Systems
+	InputSystem inputsystem;
+	PhysicsSystem physicssystem;
+	CollisionSystem collisionsystem;
+	RenderSystem rendersystem;
+	LifeSystem lifesystem;
 };
 
