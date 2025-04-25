@@ -6,6 +6,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <unordered_map>
 //ECS
 #include "ecs.hh"
 #include "Sprite.hpp"
@@ -20,6 +21,8 @@
 #include "../utils/sngtn/GameData.h"
 //gamelay
 #include "Spawner.h"
+#include "../libs/miniaudio.h"
+
 
 struct GameData;
 
@@ -42,18 +45,22 @@ public:
 	bool	m_isRunning = false;
 	Tigr* m_screen = nullptr;
 	float time = 0.f;
+	ma_engine engine;
 private:
+	GameData& gd = GameData::Instance();
 	//Sprites
 	std::map<int, std::unique_ptr<Sprite>> spritesPool;
 	const char* filenameEntities;
 	//entities ids
 	int nextEntityID = 0;
 	int enemyEntities = 0;
+	//sounds
+	std::unordered_map<std::string, ma_sound> sounds;
 public:
-
+	GameData& GetGameData() { return gd; }
 	//Data-driving functions
 	void LoadSprites(const char* filename);
-	void CreatePlayer(GameData& gd);
+	void CreatePlayer(/*GameData& gd*/);
 	void CreateEnemy();
 	void DeleteEnemy(int id);
 	void MoveEnemies();
@@ -61,10 +68,10 @@ public:
 	inline int GetMaxEntities() const { return nextEntityID; }
 
 	//score
-	void LoadRecord(GameData& gd);
+	void LoadRecord(/*GameData& gd*/);
 	void SaveScore(float newscore);
 	//entitymanager
-	void ResetEntities(GameData& gd);
+	void ResetEntities(/*GameData& gd*/);
 
 	//Inicializar
 	bool Init();
@@ -107,7 +114,12 @@ public:
 	void Wait(float ms);
 
 	void PlayDemo();
-
+	//Sound
+	void LoadAllsounds();
+	bool Loadsound(const std::string& name, const char* path);
+	void Playsound(const char* file);
+	void Startsound(const std::string& name);
+	void Stopsound(const std::string& name);
 
 	//Collisions
 	float euclidean_distance(const vec2f& _other,const vec2f& _other1) const

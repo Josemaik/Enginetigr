@@ -28,7 +28,7 @@ void Engine::LoadSprites(const char* filename)
   }
 }
 
-void Engine::CreatePlayer(GameData& gd)
+void Engine::CreatePlayer(/*GameData& gd*/)
 {
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_file(filenameEntities);
@@ -129,7 +129,7 @@ Behaviours Engine::strToBehaviour(const std::string& str)
   return Behaviours::BounceSimple;
 }
 
-void Engine::LoadRecord(GameData& gd)
+void Engine::LoadRecord(/*GameData& gd*/)
 {
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_file("../data/score.txt");
@@ -158,7 +158,7 @@ void Engine::SaveScore(float newscore)
   }
 }
 
-void Engine::ResetEntities(GameData& gd)
+void Engine::ResetEntities(/*GameData& gd*/)
 {
   auto& phy = get<physics>(0);
   phy.position = gd.spawnpoint;
@@ -175,6 +175,16 @@ void Engine::ResetEntities(GameData& gd)
 bool Engine::Init() {
 	m_screen = tigrWindow(ScreenWidth, ScreenHeight, "Arquitectura", 0);
 	if (m_screen == nullptr) return false;
+
+    ma_result result;
+    result = ma_engine_init(NULL, &engine);
+    if (result != MA_SUCCESS) {
+        return -1;
+    }
+    else
+    {
+        printf("MiniAudio initialized succesfully!\n");
+    }
 
 	m_isRunning = true;
 	return true;
@@ -193,6 +203,7 @@ bool Engine::KeyDown(int key)
 bool Engine::Quit() {
 	tigrFree(m_screen);
 	m_screen = nullptr;
+    ma_engine_uninit(&engine);
 	return true;
 };
 
@@ -348,4 +359,42 @@ void Engine::PlayDemo()
   assert(!has<name>(player));
 
   assert((join<name, position>().size() == 1));
+}
+
+void Engine::LoadAllsounds()
+{
+    if (!Loadsound("arcade_music", "sounds/backgroundmusic.wav") ||
+        !Loadsound("dead_sound", "sounds/dead.wav"))
+    {
+        printf("Load Sound Fail\n");
+    }
+}
+
+//Sounds
+bool Engine::Loadsound(const std::string& name, const char* path)
+{
+    if (ma_sound_init_from_file(&engine, path, 0, nullptr, nullptr, &sounds[name]) != MA_SUCCESS)
+        return false;
+
+    return true;
+}
+
+void Engine::Playsound(const char* file)
+{
+    ma_engine_play_sound(&engine, file, NULL);
+}
+
+void Engine::Startsound(const std::string& name)
+{
+    if (sounds.count(name))
+        ma_sound_start(&sounds[name]);
+}
+
+void Engine::Stopsound(const std::string& name)
+{
+    if (sounds.count(name))
+    {
+        ma_sound_stop(&sounds[name]);
+        ma_sound_seek_to_pcm_frame(&sounds[name], 0);
+    }
 }

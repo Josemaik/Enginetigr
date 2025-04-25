@@ -1,22 +1,42 @@
 #pragma once
 
+#include "../Vector2.h" // Asegúrate de incluir el header donde esté vec2f
+
 enum States { Menu, Gameplay, Dead };
 
-struct GameData
+class GameData
 {
-	States CurrentState = Menu;
-	//spawn point player
-	vec2f spawnpoint{ 0.f,0.f };
-	//current 
-	float bestScore = 0.f;
-	//timer
-	float GlobalTimer = 0.f;
+public:
+    // Acceso global al singleton
+    static GameData& Instance()
+    {
+        static GameData instance;
+        return instance;
+    }
 
-	//int CurrentLevel = 0;
-	////time to change level
-	//int LevelTime = 20.f;
-	////global timer
-	//int GlobalTime = 0.f;
-	////time to spawn new enemie
-	//float spawnenemieTime = 5.f;
+    // Eliminar operaciones de copia y asignación
+    GameData(const GameData&) = delete;
+    GameData& operator=(const GameData&) = delete;
+
+    // Miembros públicos
+    States CurrentState = Menu;
+    vec2f spawnpoint{ 0.f, 0.f };
+    float bestScore = 0.f;
+    float GlobalTimer = 0.f;
+    //fail sound counter
+    float timer = 0.f;
+    float interval = 3.f;
+    bool soundplayed = false;
+    bool UpdateSoundFail(float& delta)
+    {
+        timer += delta;
+        if (timer >= interval) {
+            timer = 0;
+            return true;
+        }
+        return false;
+    }
+private:
+    // Constructor privado
+    GameData() = default;
 };

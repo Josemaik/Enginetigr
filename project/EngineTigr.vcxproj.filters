@@ -78,6 +78,9 @@
     <ClCompile Include="..\src\systems\LifeSystem.cpp">
       <Filter>Source Files\src\systems</Filter>
     </ClCompile>
+    <ClCompile Include="miniaudio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\managers\Sprite.hpp">

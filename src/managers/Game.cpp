@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "../src/managers/Engine.h"
-#include "../utils/sngtn/GameData.h"
 #include <iomanip>
 #include <sstream>
 #include <iostream>
@@ -9,14 +8,17 @@
 
 void Game::Run()
 {
-	GameData gamedata; //convertir a singleton
+	//Load resources
 	engine.LoadSprites("../data/entities.txt");
-	engine.CreatePlayer(gamedata);
-	//Load Record
-	engine.LoadRecord(gamedata);
+	engine.LoadRecord();
+	engine.LoadAllsounds();
+	//Create player
+	engine.CreatePlayer();
 
+	//Spawner
 	Spawner spawner{ 5.f };
-	
+	//GameData singleton
+	auto& gd = engine.GetGameData();
 	//Loop
 	while (engine.isRunning())
 	{
@@ -31,7 +33,7 @@ void Game::Run()
 		//Wait
 		//engine.Wait(timeStep);
 
-		switch (gamedata.CurrentState)
+		switch (gd.CurrentState)
 		{
 		case Menu:
 		{
@@ -41,12 +43,14 @@ void Game::Run()
 
 			//Show best Score
 			std::ostringstream ss;
-			ss << std::fixed << std::setprecision(2) << gamedata.bestScore;
+			ss << std::fixed << std::setprecision(2) << gd.bestScore;
 			engine.Print(("Best Record: " + engine.toString(ss.str()) + "s").c_str(), 100.f, ScreenHeight / 2.5f + 35.f, 0xff, 0xff, 0x00);
 
 			if (engine.KeyDown(TK_SPACE))
 			{
-				gamedata.CurrentState = States::Gameplay;
+				engine.Playsound("sounds/startgame.wav");
+				engine.Startsound("arcade_music");
+				gd.CurrentState = States::Gameplay;
 			}
 		}
 			break;
@@ -59,9 +63,9 @@ void Game::Run()
 			//Update systems
 			inputsystem.update(engine, delta);
 			physicssystem.update(engine, delta);
-			collisionsystem.update(engine, delta,gamedata);
+			collisionsystem.update(engine, delta,gd);
 			lifesystem.update(engine, delta);
-			rendersystem.update(engine,gamedata,fps);
+			rendersystem.update(engine,gd,fps);
 			//update spawner
 			spawner.Update(delta, engine);
 			//Animation
@@ -97,17 +101,32 @@ void Game::Run()
 			//	}
 			//}
 
-			gamedata.GlobalTimer += delta;
+			gd.GlobalTimer += delta;
 		}
 			break;
 		case Dead:
 		{
 			engine.Clear(255, 0, 0);
 
+			engine.Stopsound("arcade_music");
+
+			//Sound fail reproduction management
+			if (!gd.soundplayed)
+			{
+				engine.Startsound("dead_sound");
+				gd.soundplayed = true;
+			}
+			//in three seconds stop 
+			if (gd.UpdateSoundFail(delta))
+			{
+				engine.Stopsound("dead_sound");
+			};
+			//-------------------------------------
+
 			engine.Print("You died! :(", ScreenWidth / 2.5f, ScreenHeight / 2.5f);
 
 			std::ostringstream ss;
-			ss << std::fixed << std::setprecision(2) << gamedata.GlobalTimer;
+			ss << std::fixed << std::setprecision(2) << gd.GlobalTimer;
 			engine.Print(("Score: " + engine.toString(ss.str()) + "s").c_str(), 120.f, ScreenHeight / 2.5f + 35.f);
 
 			engine.Print("Press SPACE for a new Try!", 70.f, ScreenHeight / 1.5f);
@@ -116,21 +135,24 @@ void Game::Run()
 			if (engine.KeyDown(TK_SPACE))
 			{
 				//save score > bestscore
-				if (gamedata.GlobalTimer > gamedata.bestScore)
+				if (gd.GlobalTimer > gd.bestScore)
 				{
-					gamedata.bestScore = gamedata.GlobalTimer;
-					engine.SaveScore(gamedata.bestScore);
+					gd.bestScore = gd.GlobalTimer;
+					engine.SaveScore(gd.bestScore);
 				}
 
 				//reset timer
-				gamedata.GlobalTimer = 0.f;
+				gd.GlobalTimer = 0.f;
 
 				//reposition player and remove enemies
-				engine.ResetEntities(gamedata);
+				engine.ResetEntities();
+				//reset spawner
 				spawner.Reset();
 
 				//chage gameplay
-				gamedata.CurrentState = States::Gameplay;
+				gd.soundplayed = false;
+				engine.Startsound("arcade_music");
+				gd.CurrentState = States::Gameplay;
 			}
 		}
 		default:

@@ -32,6 +32,7 @@
     <ClCompile Include="..\src\systems\PhysicsSystem.cpp" />
     <ClCompile Include="..\src\systems\RenderSystem.cpp" />
     <ClCompile Include="Lua.c" />
+    <ClCompile Include="miniaudio.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\ecs.hh" />
@@ -148,7 +149,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\libs;..\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\data\sounds;..\libs;..\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
