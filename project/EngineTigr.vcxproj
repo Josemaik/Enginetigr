@@ -41,7 +41,6 @@
     <ClInclude Include="..\src\components\AnimationComponent.h" />
     <ClInclude Include="..\src\components\LifeComponent.h" />
     <ClInclude Include="..\src\components\PhysicsComponent.h" />
-    <ClInclude Include="..\src\components\SpawnerComponent.h" />
     <ClInclude Include="..\src\managers\Engine.h" />
     <ClInclude Include="..\src\managers\Game.h" />
     <ClInclude Include="..\src\managers\Spawner.h" />
@@ -149,7 +148,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\data\sounds;..\libs;..\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\data\images;..\data\sounds;..\libs;..\libs\pugixml;C:\Users\JOSE MANUEL\Desktop\UTAD\arquitectura\Enginetigr\libs\minilua;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>

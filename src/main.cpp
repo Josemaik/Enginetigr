@@ -39,5 +39,4 @@ int main()
 		std::cerr << "Error: No se pudo inicializar el engine." << std::endl;
 		return 1;
 	}
-	//return 0;
 }

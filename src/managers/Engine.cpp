@@ -25,6 +25,7 @@ void Engine::LoadSprites(const char* filename)
       spritesPool[gid] = std::make_unique<Sprite>(spriteSource.c_str());
       if (gid > 0) enemyEntities++;
     }
+    printf("num enemies: %d", enemyEntities);
   }
 }
 
@@ -52,6 +53,8 @@ void Engine::CreatePlayer(/*GameData& gd*/)
 
 void Engine::CreateEnemy()
 {
+  Playsound("sounds/spawnsound.wav");
+
   std::random_device rd; // Semilla
   std::mt19937 gen(rd()); 
   std::uniform_int_distribution<> distrib(1, enemyEntities); // Rango [1, N]
@@ -177,7 +180,7 @@ bool Engine::Init() {
 	if (m_screen == nullptr) return false;
 
     ma_result result;
-    result = ma_engine_init(NULL, &engine);
+    result = ma_engine_init(NULL, &SoundEngine);
     if (result != MA_SUCCESS) {
         return -1;
     }
@@ -203,7 +206,13 @@ bool Engine::KeyDown(int key)
 bool Engine::Quit() {
 	tigrFree(m_screen);
 	m_screen = nullptr;
-    ma_engine_uninit(&engine);
+
+    //Uninit sounds and sound engine
+    for (auto& sound : sounds)
+    {
+        ma_sound_uninit(&sound.second);
+    }
+    ma_engine_uninit(&SoundEngine);
 	return true;
 };
 
@@ -256,111 +265,6 @@ void Engine::Wait(float ms)
 	} while (ms > 0);
 }
 
-void Engine::PlayDemo()
-{
-  const vec2f zero = { 0.f, 0.f }, one = { 1.f, 1.f };
-  // component aliases
-  using friendly = component<        bool, 'team' >;
-  using health = component<         int, 'heal' >;
-  using mana = component<         int, 'mana' >;
-  using coins = component<         int, 'coin' >;
-  using name = component< std::string, 'name' >;
-  using position = component<       vec2f, 'pos2' >;
-  // entities
-  int none = 0, player = 1, enemy = 2;
-
-  // components
-  assert(!has<name>(player));
-  assert(!has<position>(player));
-  assert(!has<coins>(enemy));
-  assert(!has<health>(enemy));
-
-  add<name>(player) = "Hero";
-  add<position>(player) = zero;
-  add<health>(player) = 100;
-  add<coins>(player) = 200;
-  add<mana>(player) = 4000;
-  add<friendly>(player) = true;
-
-  add<name>(enemy) = "Orc";
-  add<position>(enemy) = one;
-  add<health>(enemy) = 200;
-  add<coins>(enemy) = 50;
-  add<mana>(enemy) = 10;
-
-  assert(get<health>(player) == 100); // :>
-
-  assert(has<name>(player));
-  assert(!has<vec2i>(player));
-  assert(has<position>(player));
-  assert(has<health>(player));
-
-  assert(get<name>(player) == "Hero");
-  assert(get<position>(player) == zero);
-  assert(get<health>(player) == 100);
-
-  // systems; here we intersect a system of all elements with <name> and <position>.
-  assert((join<name, position>().size() == 2));
-
-  // systems; render game state
-  auto display = [this]() {
-    std::cout << "- ";
-    for (auto& id : join<name, coins, health, position>()) {
-      /*std::cout
-        << get<name>(id) << " at "
-        << "(" << get<position>(id).first << "," << get<position>(id).second << ")"
-        << " " << get<health>(id) << "HP"
-        << " " << get<coins>(id) << "$, ";*/
-      //Print(toString(get<name>(id) + " at ").c_str());
-    }
-    std::cout << std::endl;
-    };
-
-  display();
-
-  // systems; simulate movement
-  for (auto& id : join<name, position>()) {
-    std::cout << get<name>(id) << " says: im moving!" << std::endl;
-    vec2f& pos = get<position>(id);
-    pos.first += 10;
-    pos.second++;
-  }
-
-  // systems; simulate a spell bomb in entities of any type
-  for (auto& id : system<mana>()) {
-    std::cout << "spellboomb!!!" << std::endl;
-    get<mana>(id) -= 50;
-  }
-
-  // systems; simulate a powerup (+$100) for all players
-  for (auto& id : join<name, coins, friendly>()) {
-    get<coins>(id) += 100;
-    std::cout << get<name>(id) << " says: money! :)" << std::endl;
-  }
-
-  // systems; simulate a poison (-50%HP) to all entities that are not friendly (so enemies)
-  for (auto& id : exclude<friendly>(join<name, health>())) {
-    get<health>(id) *= 0.5;
-    std::cout << get<name>(id) << " says: ugh! poisoned :(" << std::endl;
-  }
-
-  display();
-
-  assert(get<health>(player) == 100 + 0);
-  assert(get<health>(enemy) == 200 / 2);
-  assert(get<coins>(player) == 200 + 100);
-  assert(get<coins>(enemy) == 50 + 0);
-  assert(get<mana>(player) == 4000 - 50);
-  assert(get<mana>(enemy) == 10 - 50);
-
-  assert(del<position>(player));
-  assert(!has<position>(player));
-  assert(del<name>(player));
-  assert(!has<name>(player));
-
-  assert((join<name, position>().size() == 1));
-}
-
 void Engine::LoadAllsounds()
 {
     if (!Loadsound("arcade_music", "sounds/backgroundmusic.wav") ||
@@ -373,7 +277,7 @@ void Engine::LoadAllsounds()
 //Sounds
 bool Engine::Loadsound(const std::string& name, const char* path)
 {
-    if (ma_sound_init_from_file(&engine, path, 0, nullptr, nullptr, &sounds[name]) != MA_SUCCESS)
+    if (ma_sound_init_from_file(&SoundEngine, path, 0, nullptr, nullptr, &sounds[name]) != MA_SUCCESS)
         return false;
 
     return true;
@@ -381,7 +285,7 @@ bool Engine::Loadsound(const std::string& name, const char* path)
 
 void Engine::Playsound(const char* file)
 {
-    ma_engine_play_sound(&engine, file, NULL);
+    ma_engine_play_sound(&SoundEngine, file, NULL);
 }
 
 void Engine::Startsound(const std::string& name)
@@ -395,6 +299,16 @@ void Engine::Stopsound(const std::string& name)
     if (sounds.count(name))
     {
         ma_sound_stop(&sounds[name]);
-        ma_sound_seek_to_pcm_frame(&sounds[name], 0);
+        ResetSound(name);
     }
+}
+
+bool Engine::CheckIfSoundends(const std::string& name)
+{
+    return ma_sound_at_end(&sounds[name]);
+}
+
+void Engine::ResetSound(const std::string& name)
+{
+    ma_sound_seek_to_pcm_frame(&sounds[name], 0);
 }

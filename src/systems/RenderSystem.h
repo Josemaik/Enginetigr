@@ -1,7 +1,7 @@
 #pragma once
 
 class Engine;
-struct GameData;
+class GameData;
 
 class RenderSystem
 {

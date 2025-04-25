@@ -35,7 +35,7 @@ struct Sprite
 	{
 		//int dx = x, dy = y; //coordinates
 		int sx = 0, sy = 0; // source co - ordinates
-		tigrBlitAlpha(window, image, x, y, sx, sy, image->w, image->h,1);
+		tigrBlitAlpha(window, image, static_cast<int>(x), static_cast<int>(y), sx, sy, image->w, image->h,1);
 		//tigrBlit(window, image, x, y, sx, sy, image->w, image->h);
 	}
 

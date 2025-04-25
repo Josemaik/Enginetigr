@@ -7,24 +7,20 @@
 #include <sstream>
 #include <map>
 #include <unordered_map>
-//ECS
+//libs
 #include "ecs.hh"
-#include "Sprite.hpp"
+#include "../libs/miniaudio.h"
 //components
 #include "../components/AIComponent.h"
 #include "../components/AnimationComponent.h"
 #include "../components/PhysicsComponent.h"
-#include "../components/SpawnerComponent.h"
 #include "../components/LifeComponent.h"
+//Managers
+#include "Spawner.h"
+#include "Sprite.hpp"
 //utils
 #include "../utils/Vector2.h"
 #include "../utils/sngtn/GameData.h"
-//gamelay
-#include "Spawner.h"
-#include "../libs/miniaudio.h"
-
-
-struct GameData;
 
 //global variables
 static constexpr float timeStep = 1000.f / 60.f;
@@ -35,17 +31,15 @@ static constexpr float ScreenHeight = 240.f;
 using sprite = component< Sprite*, 'spr' >;
 using input = component < bool, 'inp' >;
 using physics = component < PhysicsComponent , 'phy'>; 
-using spawner = component < SpawnerComponent, 'spw'>;
 using IA = component < AIComponent, 'ia' >;
 using life = component < LifeComponent, 'life' >;
-//using Anim = component < AnimationComponent, 'anim'>;
 
 class Engine {
 public:
 	bool	m_isRunning = false;
 	Tigr* m_screen = nullptr;
 	float time = 0.f;
-	ma_engine engine;
+	ma_engine SoundEngine;
 private:
 	GameData& gd = GameData::Instance();
 	//Sprites
@@ -57,23 +51,32 @@ private:
 	//sounds
 	std::unordered_map<std::string, ma_sound> sounds;
 public:
+	//singleton
 	GameData& GetGameData() { return gd; }
+
+	//////////////////////////////////////
 	//Data-driving functions
 	void LoadSprites(const char* filename);
-	void CreatePlayer(/*GameData& gd*/);
+	void CreatePlayer();
 	void CreateEnemy();
+
+	//helpers
+	Behaviours strToBehaviour(const std::string& str);
+
+	/////////////////////////////////////
+	//score
+	void LoadRecord();
+	void SaveScore(float newscore);
+
+	////////////////////////////////////
+	//entitymanager
+	void ResetEntities();
+	inline int GetMaxEntities() const { return nextEntityID; }
 	void DeleteEnemy(int id);
 	void MoveEnemies();
-	Behaviours strToBehaviour(const std::string& str);
-	inline int GetMaxEntities() const { return nextEntityID; }
 
-	//score
-	void LoadRecord(/*GameData& gd*/);
-	void SaveScore(float newscore);
-	//entitymanager
-	void ResetEntities(/*GameData& gd*/);
-
-	//Inicializar
+	///////////////////////////////////
+	//Tigr functions
 	bool Init();
 
 	//bool Input();
@@ -113,14 +116,17 @@ public:
 	//Wait milisecond
 	void Wait(float ms);
 
-	void PlayDemo();
+	//////////////////////////////////////////
 	//Sound
 	void LoadAllsounds();
 	bool Loadsound(const std::string& name, const char* path);
 	void Playsound(const char* file);
 	void Startsound(const std::string& name);
 	void Stopsound(const std::string& name);
+	bool CheckIfSoundends(const std::string& name);
+	void ResetSound(const std::string& name);
 
+	//////////////////////////////////////////
 	//Collisions
 	float euclidean_distance(const vec2f& _other,const vec2f& _other1) const
 	{
@@ -143,73 +149,13 @@ public:
 	//CIRCLE-RECT
 	bool checkCircleRect(const vec2f& circlePos, float circleRadius, const vec2f& rectPos, const vec2f& rectSize)
 	{
-		float left = rectPos.first;
-		float right = rectPos.first + rectSize.first;
-		float top = rectPos.second;
-		float bottom = rectPos.second + rectSize.second;
-		vec2f lefttop{ left ,top };
-		vec2f leftbottom{ left,bottom };
-		vec2f righttop{ right,top };
-		vec2f rightbottom{ right,bottom };
+		// Obtener el punto más cercano en el rectángulo al centro del círculo
+		float closestX = std::max(rectPos.first, std::min(circlePos.first, rectPos.first + rectSize.first));
+		float closestY = std::max(rectPos.second, std::min(circlePos.second, rectPos.second + rectSize.second));
 
-		// Comprobamos si está dentro del circulo
-		if (circlePos.first > left && circlePos.first < right &&
-			circlePos.second >= top && circlePos.second < bottom)
-		{
-			return true;
-		}
-		else {
-			// Comprobamos cuadrantes esquinas
-			if (circlePos.first < left && circlePos.second < top)
-			{
-				// esquina superior izquierda
-				if (euclidean_distance(lefttop,circlePos) < circleRadius)
-				{
-					return true;
-				}
-			}
-			if (circlePos.first < left && circlePos.second > bottom)
-			{
-				// esquina inferior izquierda
-				if (euclidean_distance(leftbottom,circlePos) < circleRadius)
-				{
-					return true;
-				}
-			}
-			if (circlePos.first > right && circlePos.second < top)
-			{
-				// esquina superior deerecha
-				if (euclidean_distance(righttop,circlePos) < circleRadius)
-				{
-					return true;
-				}
-			}
-			if (circlePos.first > right && circlePos.second > bottom)
-			{
-				// esquina inferior deerecha
-				if (euclidean_distance(rightbottom,circlePos) < circleRadius)
-				{
-					return true;
-				}
-			}
-			// Comprobamos bordes horizontales y verticales
-			if (circlePos.first >= left && circlePos.second <= right)
-			{
-				// Bordes superior e inferior
-				if (std::abs(circlePos.second - top) < circleRadius || std::abs(circlePos.second - bottom) < circleRadius)
-				{
-					return true;
-				}
-			}
-			if (circlePos.second >= top && circlePos.second <= bottom)
-			{
-				// Bordes izquierdo y derecho
-				if (std::abs(circlePos.first - left) < circleRadius || std::abs(circlePos.first - right) < circleRadius)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
+		float dx = circlePos.first - closestX;
+		float dy = circlePos.second - closestY;
+
+		return (dx * dx + dy * dy) < (circleRadius * circleRadius);
 	}
 };

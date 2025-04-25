@@ -56,6 +56,13 @@ void Game::Run()
 			break;
 		case Gameplay:
 		{
+			//loop music
+			if (engine.CheckIfSoundends("arcade_music"))
+			{
+				engine.ResetSound("arcade_music");
+				engine.Startsound("arcade_music");
+			}
+
 			engine.Clear(0, 0, 255);
 
 			printf("Enemies alive: %d\n",engine.GetMaxEntities());
@@ -68,46 +75,14 @@ void Game::Run()
 			rendersystem.update(engine,gd,fps);
 			//update spawner
 			spawner.Update(delta, engine);
-			//Animation
-			//for (auto& id : join<sprite, Anim>())
-			//{
-				//Sprite& spr = get<sprite>(id);
-				/*float& time = get<Anim>(id).currentTime;
-				time += delta;
-				printf("currenttime: %f", time);*/
-				
-			//}
-
-			//IA
-			//for (auto& id : join<position,IA>())
-			//{
-			//	Behaviours bh = get<IA>(id).behaviour;
-			//	switch (bh)
-			//	{
-			//	case Behaviours::BounceSimple:
-			//	{
-			//		//printf("Soy simple\n");
-
-			//	}
-			//		break;
-			//	case Behaviours::SquashStretch:
-			//	{
-			//		//printf("Me aplasto\n");
-
-			//	}
-			//		break;
-			//	default:
-			//		break;
-			//	}
-			//}
-
+			//update score
 			gd.GlobalTimer += delta;
 		}
 			break;
 		case Dead:
 		{
 			engine.Clear(255, 0, 0);
-
+			//Stop music
 			engine.Stopsound("arcade_music");
 
 			//Sound fail reproduction management
@@ -149,7 +124,7 @@ void Game::Run()
 				//reset spawner
 				spawner.Reset();
 
-				//chage gameplay
+				//change to gameplay
 				gd.soundplayed = false;
 				engine.Startsound("arcade_music");
 				gd.CurrentState = States::Gameplay;

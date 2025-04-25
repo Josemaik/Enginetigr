@@ -30,16 +30,24 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 				if (sprenemy)
 				{
 					auto& phyenemy = get<physics>(i);
-					/*if (engine.checkCircleRect(phyenemy.position, sprenemy->image->w / 2.5f, pos, vec2f{ spr->image->w,spr->image->h }))
-					{
-						printf("Colision con player\n");
-						CurrentState = States::Dead;
-					}*/
-					if (engine.checkCircleCircle(phyenemy.position, sprenemy->image->w / 2.f, pos, spr->image->w / 2.f))
+
+					// Calculate radius
+					vec2f circleCenter = {
+						phyenemy.position.first + sprenemy->image->w / 2.f,
+						phyenemy.position.second + sprenemy->image->h / 2.f
+					};
+					float radius = std::min(sprenemy->image->w, sprenemy->image->h) / 2.f;
+
+					if (engine.checkCircleRect(circleCenter, radius, pos, vec2f{ spr->image->w,spr->image->h }))
 					{
 						printf("Colision con player\n");
 						gd.CurrentState = States::Dead;
 					}
+					/*if (engine.checkCircleCircle(phyenemy.position, sprenemy->image->w / 2.f, pos, spr->image->w / 2.f))
+					{
+						printf("Colision con player\n");
+						gd.CurrentState = States::Dead;
+					}*/
 				}
 			}
 		}
@@ -83,32 +91,6 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 						phy.velocity.second *= -phy.bounciness;
 					}
 				}
-				//colision con otra esfera
-				//if (id == 1)
-				//{
-				//	//es el 2
-				//	auto& phy2 = get<physics>(2);
-				//	Sprite* spr2 = get<sprite>(2);
-				//	vec2f& pos2 = phy2.position;
-
-				//	if (spr2 != nullptr)
-				//	{
-				//		if (engine.checkCircleCircle(pos, spr->image->w / 2.5f, pos2, spr2->image->w / 2.5f))
-				//		{
-				//			printf("Colision entre circulos\n");
-				//			auto& speedy2 = phy2.velocity.second;
-				//			auto& speedx2 = phy2.velocity.first;
-				//			speedy2 += 5;
-				//			speedx2 += 5;
-				//			speedy2 *= -1;
-				//			speedx2 *= -1;
-				//			auto& speedy = phy.velocity.second;
-				//			auto& speedx = phy.velocity.first;
-				//			speedy *= -1;
-				//			speedx *= -1;
-				//		}
-				//	}
-				//}
 			}
 		}
 	}

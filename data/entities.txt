@@ -3,9 +3,9 @@
   <entity>
     <id>0</id>
     <name>player</name>
-    <position x = "148.5f" y = "218.f" />
+    <position x = "0.f" y = "218.f" />
     <velocity x = "60.f" y = "0.f" />
-    <sprite texture_file="../data/squinkle.png"/>
+    <sprite texture_file="images/squinkle.png"/>
   </entity>
   <entity>
     <id>1</id>
@@ -16,9 +16,9 @@
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="../data/ball_mid.png"/>
+    <sprite texture_file="images/ball_mid.png"/>
   </entity>
- <entity>
+  <entity>
     <id>2</id>
     <name>circle_mid_2</name>
     <position x = "60.f" y = "0.f" />
@@ -27,9 +27,9 @@
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="../data/ball_mid.png"/>
+    <sprite texture_file="images/ball_mid.png"/>
   </entity>
- <entity>
+  <entity>
     <id>3</id>
     <name>circle_mid_3</name>
     <position x = "60.f" y = "10.f" />
@@ -38,7 +38,7 @@
     <bounciness>0.f</bounciness>
     <ai behaviour="BounceSimple"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="../data/hexagonBall_frame1.png"/>
+    <sprite texture_file="images/hexagonBall_frame1.png"/>
   </entity>
   <entity>
     <id>4</id>
@@ -49,9 +49,9 @@
     <bounciness>0.8f</bounciness>
     <ai behaviour="SquashStretch"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="../data/ball_green.png"/>
+    <sprite texture_file="images/ball_green.png"/>
   </entity>
-<entity>
+  <entity>
     <id>5</id>
     <name>hexagon_blue</name>
     <position x = "150.f" y = "10.f" />
@@ -60,7 +60,7 @@
     <bounciness>0.8f</bounciness>
     <ai behaviour="BounceSimple"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="../data/hexagon_blue.png"/>
+    <sprite texture_file="images/hexagon_blue.png"/>
   </entity>
   <entity>
     <id>6</id>
@@ -71,6 +71,39 @@
     <bounciness>1.f</bounciness>
     <ai behaviour="SquashStretch"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="../data/ball.png"/>
+    <sprite texture_file="images/ball.png"/>
+  </entity>
+  <entity>
+    <id>7</id>
+    <name>small ball</name>
+    <position x = "200.f" y = "10.f" />
+    <velocity x = "0.f" y = "0.f" />
+    <gravity>40.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <lifetime>14.f</lifetime>
+    <sprite texture_file="images/small_blue_ball.png"/>
+  </entity>
+  <entity>
+    <id>8</id>
+    <name>small ball 1</name>
+    <position x = "100.f" y = "10.f" />
+    <velocity x = "0.f" y = "0.f" />
+    <gravity>40.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <lifetime>14.f</lifetime>
+    <sprite texture_file="images/small_blue_ball.png"/>
+  </entity>
+  <entity>
+    <id>9</id>
+    <name>small ball 2</name>
+    <position x = "150.f" y = "10.f" />
+    <velocity x = "0.f" y = "0.f" />
+    <gravity>40.f</gravity>
+    <bounciness>0.8f</bounciness>
+    <ai behaviour="SquashStretch"/>
+    <lifetime>14.f</lifetime>
+    <sprite texture_file="images/small_blue_ball.png"/>
   </entity>
 </entities>
