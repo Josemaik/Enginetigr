@@ -17,15 +17,14 @@ void Engine::LoadSprites(const char* filename)
   {
     pugi::xml_node entities = doc.child("entities");
     for (pugi::xml_node entityNode = entities.child("entity");
-      entityNode; // Condición correcta
+      entityNode;
       entityNode = entityNode.next_sibling("entity"))
-    {
+    { //save sprites in map
       int gid = entityNode.child("id").text().as_int();
       std::string spriteSource = entityNode.child("sprite").attribute("texture_file").as_string();
       spritesPool[gid] = std::make_unique<Sprite>(spriteSource.c_str());
       if (gid > 0) enemyEntities++;
     }
-    printf("num enemies: %d", enemyEntities);
   }
 }
 
@@ -55,13 +54,12 @@ void Engine::CreateEnemy()
 {
   Playsound("sounds/spawnsound.wav");
 
-  std::random_device rd; // Semilla
+  //random number
+  std::random_device rd;
   std::mt19937 gen(rd()); 
-  std::uniform_int_distribution<> distrib(1, enemyEntities); // Rango [1, N]
+  std::uniform_int_distribution<> distrib(1, enemyEntities); // Range [1, N]
 
   int random_number = distrib(gen);
-
-  printf("Random: %d\n", random_number);
 
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_file(filenameEntities);
@@ -111,7 +109,6 @@ void Engine::CreateEnemy()
                 coordNode;
                 coordNode = coordNode.next_sibling("coord"))
             {
-                printf("coord: %d\n", coordNode.attribute("x").as_int());
                 animc.frames.push_back(coordNode.attribute("x").as_int());
             }
         }
@@ -131,20 +128,22 @@ void Engine::DeleteEnemy(int id)
   del<anim>(id);
 }
 
-void Engine::MoveEnemies()
+void Engine::MoveEnemies(int idToRemove)
 {
-  //desplazamos los enemigos y eliminamos el último
-  for (int id = 1; id < nextEntityID - 1; ++id)
-  {
-    if (has<sprite>(id + 1)) get<sprite>(id) = get<sprite>(id + 1);
-    if (has<physics>(id + 1)) get<physics>(id) = get<physics>(id + 1);
-    if (has<IA>(id + 1)) get<IA>(id) = get<IA>(id + 1);
-    if (has<life>(id + 1)) get<life>(id) = get<life>(id + 1);
-    if (has<anim>(id + 1)) get<anim>(id) = get<anim>(id + 1);
+  int lastID = nextEntityID - 1;
+  if (idToRemove < 1 || idToRemove > lastID) return; // inalid id
+
+  //If it is not the last one, we copy the last one to the position we want to delete ( swap )
+  if (idToRemove != lastID) {
+      if (has<sprite>(lastID))    get<sprite>(idToRemove) = get<sprite>(lastID);
+      if (has<physics>(lastID))   get<physics>(idToRemove) = get<physics>(lastID);
+      if (has<IA>(lastID))        get<IA>(idToRemove) = get<IA>(lastID);
+      if (has<life>(lastID))      get<life>(idToRemove) = get<life>(lastID);
+      if (has<anim>(lastID))      get<anim>(idToRemove) = get<anim>(lastID);
   }
 
+  // Delete entity, reducing the counter
   nextEntityID--;
-  //DeleteEnemy(--nextEntityID);
 }
 
 Behaviours Engine::strToBehaviour(const std::string& str)
@@ -154,12 +153,12 @@ Behaviours Engine::strToBehaviour(const std::string& str)
   return Behaviours::BounceSimple;
 }
 
-void Engine::LoadRecord(/*GameData& gd*/)
+void Engine::LoadRecord()
 {
   pugi::xml_document doc;
   pugi::xml_parse_result result = doc.load_file("../data/score.txt");
   if (result)
-  {
+  { //save score in game data
     gd.bestScore = doc.child("score").text().as_float();
   }
 }
@@ -168,13 +167,13 @@ void Engine::SaveScore(float newscore)
 {
   pugi::xml_document doc;
 
-  // Crear el nodo raíz "score"
+  // Create root node "score"
   pugi::xml_node scoreNode = doc.append_child("score");
 
-  // Establecer el texto con el valor del récord
+  // Set text value
   scoreNode.text().set(newscore);
 
-  // Guardar el documento en el archivo
+  // save document in file
   bool saveSucceeded = doc.save_file("../data/score.txt");
 
   if (!saveSucceeded)
@@ -183,7 +182,7 @@ void Engine::SaveScore(float newscore)
   }
 }
 
-void Engine::ResetEntities(/*GameData& gd*/)
+void Engine::ResetEntities()
 {
   auto& phy = get<physics>(0);
   phy.position = gd.spawnpoint;
@@ -198,9 +197,10 @@ void Engine::ResetEntities(/*GameData& gd*/)
 }
 
 bool Engine::Init() {
+    //Init tigr
 	m_screen = tigrWindow(ScreenWidth, ScreenHeight, "Arquitectura", 0);
 	if (m_screen == nullptr) return false;
-
+    //Init mini audio
     ma_result result;
     result = ma_engine_init(NULL, &SoundEngine);
     if (result != MA_SUCCESS) {

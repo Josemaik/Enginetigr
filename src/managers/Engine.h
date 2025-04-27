@@ -60,7 +60,7 @@ public:
 	GameData& GetGameData() { return gd; }
 
 	//////////////////////////////////////
-	//Data-driving functions
+	//Data-driving methods
 	void LoadSprites(const char* filename);
 	void CreatePlayer();
 	void CreateEnemy();
@@ -75,13 +75,13 @@ public:
 
 	////////////////////////////////////
 	//entitymanager
-	void ResetEntities();
+	void ResetEntities(); //reset entities
 	inline int GetMaxEntities() const { return nextEntityID; }
-	void DeleteEnemy(int id);
-	void MoveEnemies();
+	void DeleteEnemy(int id); //delete entity
+	void MoveEnemies(int idToRemove); //swap-pop
 
 	///////////////////////////////////
-	//Tigr functions
+	//Tigr methods
 	bool Init();
 
 	//bool Input();
@@ -95,8 +95,8 @@ public:
 
 	void StopRunning();
 
+	//Pause Menu methods
 	bool isPaused();
-
 	void SetPaused(bool value);
 
 	//Clear background with colour

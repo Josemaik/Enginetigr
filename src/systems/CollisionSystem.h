@@ -1,5 +1,7 @@
 #pragma once
 
+//CollisionSystem - processes all entities with collision component
+
 class Engine;
 class GameData;
 

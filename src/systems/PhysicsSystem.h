@@ -1,5 +1,7 @@
 #pragma once
 
+//CollisionSystem - processes all entities with physics component
+
 class Engine;
 
 class PhysicsSystem

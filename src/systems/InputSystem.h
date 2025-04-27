@@ -1,5 +1,7 @@
 #pragma once
 
+//CollisionSystem - processes all entities with input component
+
 class Engine;
 
 class InputSystem

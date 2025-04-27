@@ -1,5 +1,7 @@
 #pragma once
 
+//Spawner - Manage enemies spawn
+
 class Engine;
 
 class Spawner {

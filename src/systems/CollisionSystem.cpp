@@ -13,13 +13,13 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 		if (spr->image == nullptr)
 		{
 			std::cerr << "Error: Sprite image is nullptr!" << std::endl;
-			exit(1); // Opcional, o dejar que continúe mostrando algo.
+			exit(1);
 		}
 
 		int imagewidth = spr->image->w;
 		if (has<anim>(id))
 		{
-			auto& animc = get<anim>(id); //get anim frame with to calculate collision
+			auto& animc = get<anim>(id); //get anim frame width to calculate collision
 			imagewidth = animc.framewidth;
 		}
 
@@ -32,7 +32,7 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 		//update always
 		if (has<input>(id))
 		{
-			for (int i = 1; i < engine.GetMaxEntities(); i++)
+			for (int i = 1; i < engine.GetMaxEntities(); i++) //Collisions Player-Enemies
 			{
 				Sprite* sprenemy = get<sprite>(i);
 				if (sprenemy)
@@ -83,7 +83,6 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 					else
 					{
 						phy.velocity.first *= -1.f;
-						//phy.gravity += 5.f;
 						phy.bounciness -= 0.1f;
 					}
 				}
@@ -95,7 +94,6 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 					}
 					else
 					{
-						//phy.position.second -= spr->image->w / 2.5f;
 						phy.position.second = laspos.second;
 						phy.velocity.second *= -phy.bounciness;
 					}

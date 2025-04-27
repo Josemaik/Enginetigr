@@ -27,7 +27,7 @@ void InputSystem::update(Engine& engine,float& delta)
 				engine.SetPaused(true);
 			}
 		}
-		else
+		else //Pause Menu inputs
 		{
 			if (engine.KeyDown(TK_DOWN) || engine.KeyDown('S'))
 			{

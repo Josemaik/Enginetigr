@@ -12,7 +12,7 @@ void PhysicsSystem::update(Engine& engine, float& delta)
 
 		if (bh == Behaviours::SquashStretch)
 		{
-			// Aplicar gravedad
+			// Apply gravity
 			phy.velocity.second += phy.gravity * delta;
 		}
 

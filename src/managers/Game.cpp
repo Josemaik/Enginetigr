@@ -64,8 +64,6 @@ void Game::Run()
 			}
 
 			engine.Clear(0, 0, 255);
-
-			//printf("Enemies alive: %d\n",engine.GetMaxEntities());
 			
 			//Update systems
 			if (!engine.isPaused())

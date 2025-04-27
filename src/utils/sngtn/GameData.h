@@ -1,24 +1,27 @@
 #pragma once
 
-#include "../Vector2.h" // Asegúrate de incluir el header donde esté vec2f
+#include "../Vector2.h"
 
+//GameData - Global class that contains game data
+
+//Game States
 enum States { Menu, Gameplay, Dead, Pause };
 
 class GameData
 {
 public:
-    // Acceso global al singleton
+    // Global access
     static GameData& Instance()
     {
         static GameData instance;
         return instance;
     }
 
-    // Eliminar operaciones de copia y asignación
+    // Delete copy and assigment constructors
     GameData(const GameData&) = delete;
     GameData& operator=(const GameData&) = delete;
 
-    // Miembros públicos
+    // Public members
     States CurrentState = Menu;
     vec2f spawnpoint{ 0.f, 0.f };
     float bestScore = 0.f;
@@ -37,6 +40,6 @@ public:
         return false;
     }
 private:
-    // Constructor privado
+    // Private constructor
     GameData() = default;
 };

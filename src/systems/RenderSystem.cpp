@@ -39,6 +39,7 @@ void RenderSystem::update(Engine& engine, GameData& gamedata, float fps)
 	ss2 << std::fixed << std::setprecision(2) << gamedata.bestScore;
 	engine.Print(("Hi-Score: " + engine.toString(ss2.str()) + "s").c_str(), 80, 5, 0xff, 0xff, 0x00);
 
+	//Pause Menu
 	if (engine.isPaused())
 	{
 		TPixel resume_back = tigrRGB(0, 0, 0), exit_back = tigrRGB(0, 0, 0);

@@ -6,6 +6,8 @@
 //pugiXML
 #include "pugixml.hpp"
 
+//Sprite - Manage sprites that represent entities
+
 struct Sprite
 {
 	Sprite() {};
@@ -23,7 +25,6 @@ struct Sprite
 	}
 	~Sprite()
 	{
-		printf("Destructor llamado\n");
 		if (image)
 		{
 			tigrFree(image);
