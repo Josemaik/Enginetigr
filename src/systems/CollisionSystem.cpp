@@ -49,7 +49,6 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 					
 					if (engine.checkCircleRect(circleCenter, radius, pos, vec2f{ spr->image->w,spr->image->h }))
 					{
-						printf("Colision con player\n");
 						gd.CurrentState = States::Dead;
 					}
 					/*if (engine.checkCircleCircle(phyenemy.position, sprenemy->image->w / 2.f, pos, spr->image->w / 2.f))

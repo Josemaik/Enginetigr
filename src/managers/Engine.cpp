@@ -74,7 +74,6 @@ void Engine::CreateEnemy()
       if (gid == random_number)
       {
         std::string name = entityNode.child("name").text().as_string();
-        printf("Lo he encontrado: %s\n", name.c_str());
 
         //read values from xml
         float x = entityNode.child("position").attribute("x").as_float();
@@ -334,12 +333,13 @@ void Engine::Startsound(const std::string& name)
         ma_sound_start(&sounds[name]);
 }
 
-void Engine::Stopsound(const std::string& name)
+void Engine::Stopsound(const std::string& name, bool reset)
 {
     if (sounds.count(name))
     {
         ma_sound_stop(&sounds[name]);
-        ResetSound(name);
+        if(reset)
+            ResetSound(name);
     }
 }
 

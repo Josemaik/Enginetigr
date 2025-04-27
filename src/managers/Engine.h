@@ -133,7 +133,7 @@ public:
 	bool Loadsound(const std::string& name, const char* path);
 	void Playsound(const char* file);
 	void Startsound(const std::string& name);
-	void Stopsound(const std::string& name);
+	void Stopsound(const std::string& name, bool reset);
 	bool CheckIfSoundends(const std::string& name);
 	void ResetSound(const std::string& name);
 

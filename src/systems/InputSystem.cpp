@@ -24,6 +24,7 @@ void InputSystem::update(Engine& engine,float& delta)
 			}
 			if (engine.KeyDown(TK_ESCAPE) || engine.KeyDown('P')) //Pause Menu
 			{
+				engine.Stopsound("arcade_music",false);
 				engine.SetPaused(true);
 			}
 		}
@@ -43,6 +44,7 @@ void InputSystem::update(Engine& engine,float& delta)
 			}
 			if (engine.KeyDown(TK_RETURN) && engine.current_option == 0)
 			{
+				engine.Startsound("arcade_music");
 				engine.SetPaused(false);
 			}
 			if (engine.KeyDown(TK_RETURN) && engine.current_option == 1)

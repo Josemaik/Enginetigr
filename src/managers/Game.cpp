@@ -86,7 +86,7 @@ void Game::Run()
 		{
 			engine.Clear(255, 0, 0);
 			//Stop music
-			engine.Stopsound("arcade_music");
+			engine.Stopsound("arcade_music",true);
 
 			//Sound fail reproduction management
 			if (!gd.soundplayed)
@@ -97,7 +97,7 @@ void Game::Run()
 			//in three seconds stop 
 			if (gd.UpdateSoundFail(delta))
 			{
-				engine.Stopsound("dead_sound");
+				engine.Stopsound("dead_sound",true);
 			};
 			//-------------------------------------
 
