@@ -81,6 +81,9 @@
     <ClCompile Include="miniaudio.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\systems\AnimationSystem.cpp">
+      <Filter>Source Files\src\systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\managers\Sprite.hpp">
@@ -135,6 +138,9 @@
       <Filter>Source Files\src\systems</Filter>
     </ClInclude>
     <ClInclude Include="..\src\systems\LifeSystem.h">
+      <Filter>Source Files\src\systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\systems\AnimationSystem.h">
       <Filter>Source Files\src\systems</Filter>
     </ClInclude>
   </ItemGroup>

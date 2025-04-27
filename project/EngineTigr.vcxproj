@@ -26,6 +26,7 @@
     <ClCompile Include="..\src\managers\Game.cpp" />
     <ClCompile Include="..\src\managers\Spawner.cpp" />
     <ClCompile Include="..\src\managers\Sprite.cpp" />
+    <ClCompile Include="..\src\systems\AnimationSystem.cpp" />
     <ClCompile Include="..\src\systems\CollisionSystem.cpp" />
     <ClCompile Include="..\src\systems\InputSystem.cpp" />
     <ClCompile Include="..\src\systems\LifeSystem.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="..\src\managers\Game.h" />
     <ClInclude Include="..\src\managers\Spawner.h" />
     <ClInclude Include="..\src\managers\Sprite.hpp" />
+    <ClInclude Include="..\src\systems\AnimationSystem.h" />
     <ClInclude Include="..\src\systems\CollisionSystem.h" />
     <ClInclude Include="..\src\systems\InputSystem.h" />
     <ClInclude Include="..\src\systems\LifeSystem.h" />

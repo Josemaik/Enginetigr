@@ -15,9 +15,17 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 			std::cerr << "Error: Sprite image is nullptr!" << std::endl;
 			exit(1); // Opcional, o dejar que continúe mostrando algo.
 		}
+
+		int imagewidth = spr->image->w;
+		if (has<anim>(id))
+		{
+			auto& animc = get<anim>(id); //get anim frame with to calculate collision
+			imagewidth = animc.framewidth;
+		}
+
 		//collision with screen bounds
 		bool leftWall = pos.first < 0;
-		bool rightWall = (pos.first + spr->image->w) > ScreenWidth;
+		bool rightWall = (pos.first + imagewidth) > ScreenWidth;
 		bool buttomWall = (pos.second + spr->image->h) > ScreenHeight;
 		bool upWall = pos.second < 0;
 
@@ -30,14 +38,15 @@ void CollisionSystem::update(Engine& engine, float& delta, GameData& gd)
 				if (sprenemy)
 				{
 					auto& phyenemy = get<physics>(i);
-
+					auto& animc = get<anim>(i);
 					// Calculate radius
 					vec2f circleCenter = {
-						phyenemy.position.first + sprenemy->image->w / 2.f,
+						phyenemy.position.first + animc.framewidth / 2.f,
 						phyenemy.position.second + sprenemy->image->h / 2.f
 					};
-					float radius = std::min(sprenemy->image->w, sprenemy->image->h) / 2.f;
+					float radius = std::min(animc.framewidth, sprenemy->image->h) / 2.f;
 
+					
 					if (engine.checkCircleRect(circleCenter, radius, pos, vec2f{ spr->image->w,spr->image->h }))
 					{
 						printf("Colision con player\n");

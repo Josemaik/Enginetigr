@@ -33,6 +33,7 @@ using input = component < bool, 'inp' >;
 using physics = component < PhysicsComponent , 'phy'>; 
 using IA = component < AIComponent, 'ia' >;
 using life = component < LifeComponent, 'life' >;
+using anim = component <AnimationComponent, 'anim' >;
 
 class Engine {
 public:

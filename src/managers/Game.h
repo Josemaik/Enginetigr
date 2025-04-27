@@ -5,6 +5,7 @@
 #include "../systems/CollisionSystem.h"
 #include "../systems/RenderSystem.h"
 #include "../systems/LifeSystem.h"
+#include "../systems/AnimationSystem.h"
 
 class Engine;
 
@@ -24,5 +25,6 @@ private:
 	CollisionSystem collisionsystem;
 	RenderSystem rendersystem;
 	LifeSystem lifesystem;
+	AnimationSystem animsystem;
 };
 

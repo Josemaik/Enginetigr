@@ -38,6 +38,13 @@ struct Sprite
 		tigrBlitAlpha(window, image, static_cast<int>(x), static_cast<int>(y), sx, sy, image->w, image->h,1);
 		//tigrBlit(window, image, x, y, sx, sy, image->w, image->h);
 	}
+	void DrawAnim(Tigr* window, int sx,int width)
+	{
+		//int dx = x, dy = y; //coordinates
+		//int sx = 0, sy = 0; // source co - ordinates
+		tigrBlitAlpha(window, image, static_cast<int>(x), static_cast<int>(y), sx, 0, width, image->h, 1);
+		//tigrBlit(window, image, x, y, sx, sy, image->w, image->h);
+	}
 
 	static
 	bool Save(std::string& out, Sprite& obj)

@@ -89,13 +89,33 @@ void Engine::CreateEnemy()
         std::string behaviourStr = entityNode.child("ai").attribute("behaviour").as_string();
 
         float lifetime = entityNode.child("lifetime").text().as_float();
-
+        float framerate = entityNode.child("framerate").text().as_float();
+        int animframes = entityNode.child("numframes").text().as_int();
         //create entity
         int enemy = nextEntityID++;
         add<sprite>(enemy) = spritesPool.at(gid).get();
         add<physics>(enemy) = PhysicsComponent{ .position = vec2f(x,y),.velocity = vec2f{velx,vely}, .gravity = gravity,.bounciness = bounciness };
         add<IA>(enemy) = AIComponent{ .behaviour = strToBehaviour(behaviourStr) };
         add<life>(enemy) = LifeComponent{ .Lifetime = lifetime };
+        //anim
+        auto* spr = get<sprite>(enemy);
+        int framewidth_ = spr->image->w;
+        add<anim>(enemy) = AnimationComponent{ .framerate = framerate,.framewidth = framewidth_,.numframes = animframes };
+        if (animframes > 0)
+        {
+            auto& animc = get<anim>(enemy);
+            animc.framewidth = spr->image->w / animframes;
+            //text coords
+            pugi::xml_node textcoordNode = entityNode.child("textcoord");
+            for (pugi::xml_node coordNode = textcoordNode.child("coord");
+                coordNode;
+                coordNode = coordNode.next_sibling("coord"))
+            {
+                printf("coord: %d\n", coordNode.attribute("x").as_int());
+                animc.frames.push_back(coordNode.attribute("x").as_int());
+            }
+        }
+        
         break;
       }
     }
@@ -108,6 +128,7 @@ void Engine::DeleteEnemy(int id)
   del<physics>(id);
   del<IA>(id);
   del<life>(id);
+  del<anim>(id);
 }
 
 void Engine::MoveEnemies()
@@ -119,6 +140,7 @@ void Engine::MoveEnemies()
     if (has<physics>(id + 1)) get<physics>(id) = get<physics>(id + 1);
     if (has<IA>(id + 1)) get<IA>(id) = get<IA>(id + 1);
     if (has<life>(id + 1)) get<life>(id) = get<life>(id + 1);
+    if (has<anim>(id + 1)) get<anim>(id) = get<anim>(id + 1);
   }
 
   nextEntityID--;
@@ -188,7 +210,7 @@ bool Engine::Init() {
     {
         printf("MiniAudio initialized succesfully!\n");
     }
-
+    
 	m_isRunning = true;
 	return true;
 }
@@ -197,11 +219,6 @@ bool Engine::KeyDown(int key)
 {
   return tigrKeyHeld(m_screen, key);
 }
-
-//bool Engine::RightMouse()
-//{
-//  return tigrMouse(m_screen,)
-//}
 
 bool Engine::Quit() {
 	tigrFree(m_screen);

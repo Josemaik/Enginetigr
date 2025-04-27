@@ -73,6 +73,7 @@ void Game::Run()
 				physicssystem.update(engine, delta);
 				collisionsystem.update(engine, delta,gd);
 				lifesystem.update(engine, delta);
+				animsystem.update(engine, delta);
 				//update spawner
 				spawner.Update(delta, engine);
 				//update score

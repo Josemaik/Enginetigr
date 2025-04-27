@@ -3,7 +3,7 @@
   <entity>
     <id>0</id>
     <name>player</name>
-    <position x = "0.f" y = "218.f" />
+    <position x = "148.5f" y = "218.f" />
     <velocity x = "60.f" y = "0.f" />
     <sprite texture_file="images/squinkle.png"/>
   </entity>
@@ -38,7 +38,14 @@
     <bounciness>0.f</bounciness>
     <ai behaviour="BounceSimple"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="images/hexagonBall_frame1.png"/>
+    <framerate>14.f</framerate>
+    <numframes>3</numframes>
+    <textcoord>
+	<coord x = "0"/>
+	<coord x = "32"/>
+	<coord x = "64"/>
+    </textcoord>
+    <sprite texture_file="images/hexagon_spritesheet.png"/>
   </entity>
   <entity>
     <id>4</id>
@@ -60,7 +67,14 @@
     <bounciness>0.8f</bounciness>
     <ai behaviour="BounceSimple"/>
     <lifetime>14.f</lifetime>
-    <sprite texture_file="images/hexagon_blue.png"/>
+    <framerate>8.f</framerate>
+    <numframes>3</numframes>
+    <textcoord>
+	<coord x = "0"/>
+	<coord x = "32"/>
+	<coord x = "64"/>
+    </textcoord>
+    <sprite texture_file="images/hexagon_spritesheet_blue.png"/>
   </entity>
   <entity>
     <id>6</id>

@@ -10,7 +10,22 @@ void RenderSystem::update(Engine& engine, GameData& gamedata, float fps)
 		auto* spr = get<sprite>(id);
 		spr->x = phy.position.first;
 		spr->y = phy.position.second;
-		get<sprite>(id)->Draw(engine.getScreen());
+
+		bool hasanim = false;
+		if (has<anim>(id)) //animated sprites
+		{
+			auto& animc = get<anim>(id);
+			if (animc.framerate > 0.f) //animation on
+			{
+				hasanim = true;
+				get<sprite>(id)->DrawAnim(engine.getScreen(), animc.frames[animc.currentframe], animc.framewidth);
+			}
+		}	
+
+		if(!hasanim) //sprite witout animation component
+		{
+			get<sprite>(id)->Draw(engine.getScreen());
+		}
 	}
 
 	//HUD
