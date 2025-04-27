@@ -11,13 +11,44 @@ void InputSystem::update(Engine& engine,float& delta)
 
 		phy.lastposition = phy.position;
 
-		if (engine.KeyDown('A') || engine.KeyDown(TK_LEFT)) //meter flecha izquierda, click izquierdo
+		//Player Movement
+		if (!engine.isPaused())
 		{
-			pos.first -= vel.first * delta;
+			if (engine.KeyDown('A') || engine.KeyDown(TK_LEFT)) //meter flecha izquierda, click izquierdo
+			{
+				pos.first -= vel.first * delta;
+			}
+			if (engine.KeyDown('D') || engine.KeyDown(TK_RIGHT)) //meter flecha derecha, click derecho
+			{
+				pos.first += vel.first * delta;
+			}
+			if (engine.KeyDown(TK_ESCAPE) || engine.KeyDown('P')) //Pause Menu
+			{
+				engine.SetPaused(true);
+			}
 		}
-		if (engine.KeyDown('D') || engine.KeyDown(TK_RIGHT)) //meter flecha derecha, click derecho
+		else
 		{
-			pos.first += vel.first * delta;
+			if (engine.KeyDown(TK_DOWN) || engine.KeyDown('S'))
+			{
+				engine.current_option++;
+				if (engine.current_option >= engine.pause_options)
+					engine.current_option = engine.current_option - 1;
+			}
+			if (engine.KeyDown(TK_UP) || engine.KeyDown('W'))
+			{
+				engine.current_option--;
+				if (engine.current_option < 0)
+					engine.current_option = 0;
+			}
+			if (engine.KeyDown(TK_RETURN) && engine.current_option == 0)
+			{
+				engine.SetPaused(false);
+			}
+			if (engine.KeyDown(TK_RETURN) && engine.current_option == 1)
+			{
+				engine.StopRunning();
+			}
 		}
 	}
 }

@@ -65,18 +65,22 @@ void Game::Run()
 
 			engine.Clear(0, 0, 255);
 
-			printf("Enemies alive: %d\n",engine.GetMaxEntities());
+			//printf("Enemies alive: %d\n",engine.GetMaxEntities());
 			
 			//Update systems
+			if (!engine.isPaused())
+			{
+				physicssystem.update(engine, delta);
+				collisionsystem.update(engine, delta,gd);
+				lifesystem.update(engine, delta);
+				//update spawner
+				spawner.Update(delta, engine);
+				//update score
+				gd.GlobalTimer += delta;
+			}
+			//update even in pause mode
 			inputsystem.update(engine, delta);
-			physicssystem.update(engine, delta);
-			collisionsystem.update(engine, delta,gd);
-			lifesystem.update(engine, delta);
 			rendersystem.update(engine,gd,fps);
-			//update spawner
-			spawner.Update(delta, engine);
-			//update score
-			gd.GlobalTimer += delta;
 		}
 			break;
 		case Dead:

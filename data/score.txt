@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<score>68.081543</score>
+<score>68.3363037</score>

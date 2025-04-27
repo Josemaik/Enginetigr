@@ -23,4 +23,21 @@ void RenderSystem::update(Engine& engine, GameData& gamedata, float fps)
 	std::ostringstream ss2;
 	ss2 << std::fixed << std::setprecision(2) << gamedata.bestScore;
 	engine.Print(("Hi-Score: " + engine.toString(ss2.str()) + "s").c_str(), 80, 5, 0xff, 0xff, 0x00);
+
+	if (engine.isPaused())
+	{
+		TPixel resume_back = tigrRGB(0, 0, 0), exit_back = tigrRGB(0, 0, 0);
+		if (engine.current_option == 0)
+		{
+			resume_back = tigrRGB(255, 165, 0);
+			exit_back = tigrRGB(205, 205, 205);
+		}
+		if (engine.current_option == 1)
+		{
+			resume_back = tigrRGB(205, 205, 205);
+			exit_back = tigrRGB(255, 165, 0);
+		}
+		engine.PrintButtom("Resume", 120.f, 120.f, resume_back, tigrRGB(255, 255, 255));
+		engine.PrintButtom("Exit", 130.f, 140.f, exit_back, tigrRGB(255, 255, 255));
+	}
 }

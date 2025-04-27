@@ -222,6 +222,21 @@ bool Engine::isRunning() {
 	return m_isRunning;
 }
 
+void Engine::StopRunning()
+{
+    m_isRunning = false;
+}
+
+bool Engine::isPaused()
+{
+    return m_ispaused;
+}
+
+void Engine::SetPaused(bool value)
+{
+    m_ispaused = value;
+}
+
 void Engine::Clear(unsigned char r, unsigned char g, unsigned char b)
 {
 	tigrClear(m_screen, tigrRGB(r, g, b));
@@ -240,6 +255,14 @@ void Engine::Log(const char* text)
 void Engine::Print(const char* text, int x ,int y, unsigned char r, unsigned char g, unsigned b)
 {
 	tigrPrint(m_screen, tfont, x, y, tigrRGB(r, g, b), text);
+}
+
+void Engine::PrintButtom(const char* text, int x, int y, TPixel backgroundColor, TPixel textColor)
+{
+    int width = tigrTextWidth(tfont, text);
+    int height = tigrTextHeight(tfont, text);
+    tigrFillRect(m_screen, x - 5.f,y - 5.f,width + 8.f,height + 8.f, backgroundColor);
+    tigrPrint(m_screen, tfont, x, y, textColor, text);
 }
 
 double Engine::getTime()

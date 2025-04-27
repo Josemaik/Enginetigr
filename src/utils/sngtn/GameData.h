@@ -2,7 +2,7 @@
 
 #include "../Vector2.h" // Asegúrate de incluir el header donde esté vec2f
 
-enum States { Menu, Gameplay, Dead };
+enum States { Menu, Gameplay, Dead, Pause };
 
 class GameData
 {

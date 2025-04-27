@@ -37,9 +37,13 @@ using life = component < LifeComponent, 'life' >;
 class Engine {
 public:
 	bool	m_isRunning = false;
+	bool	m_ispaused = false;
 	Tigr* m_screen = nullptr;
 	float time = 0.f;
 	ma_engine SoundEngine;
+	//pause menu
+	int pause_options = 2;
+	int current_option = 0;
 private:
 	GameData& gd = GameData::Instance();
 	//Sprites
@@ -88,6 +92,12 @@ public:
 	//Check if screen continue running or not
 	bool isRunning();
 
+	void StopRunning();
+
+	bool isPaused();
+
+	void SetPaused(bool value);
+
 	//Clear background with colour
 	void Clear(unsigned char r, unsigned char g, unsigned char b);
 
@@ -98,7 +108,7 @@ public:
 
 	//Print text
 	void Print(const char* text, int x, int y, unsigned char r = 0xff, unsigned char g = 0xff, unsigned b = 0xff);
-
+	void PrintButtom(const char* text, int x, int y, TPixel backgroundColor, TPixel textColor);
 	//Update deltaTime
 	double getTime();
 
